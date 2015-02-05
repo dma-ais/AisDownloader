@@ -3,6 +3,45 @@
  */
 angular.module('aisdownloader.app')
 
+    .directive('psDatetimePicker', [ '$rootScope', function($rootScope) {
+        var format = 'DD-MM-YYYY HH:mm';
+
+        return {
+            restrict: 'A',
+            scope: {
+                date: '=',
+                format: '@'
+            },
+            link: function (scope, element, attr, ctrl) {
+
+                var format = "DD-MM-YYYY HH:mm";
+                if (attr.format) {
+                    format = attr.format;
+                }
+
+                var picker = element.datetimepicker({
+                    format: format
+                }).data("DateTimePicker");
+
+                // Listen for date picker changed
+                element.on("dp.change", function(e) {
+                    if (picker.date && !picker.unset && picker.date.valueOf() != scope.date) {
+                        scope.date = picker.date().valueOf();
+                        $rootScope.$$phase || $rootScope.$apply();
+                    }
+                });
+
+                // Watch for date model changes
+                scope.$watch(function () {
+                    return scope.date;
+                }, function(newValue) {
+                    picker.date(newValue ? moment(newValue) : undefined);
+                    element.val(newValue ? moment(newValue).format(format) : '');
+                }, true);
+            }
+        };
+    }])
+
     .directive('aisMap', ['$rootScope', function ($rootScope) {
         'use strict';
 

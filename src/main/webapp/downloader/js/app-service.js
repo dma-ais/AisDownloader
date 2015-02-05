@@ -57,8 +57,8 @@ angular.module('aisdownloader.app')
                     targetTypes : [],
 
                     // Time Selection
-                    startDate : moment().startOf('hour').toDate(),
-                    endDate : moment().startOf('hour').add(10, 'minutes').toDate(),
+                    startDate : moment().startOf('hour').valueOf(),
+                    endDate : moment().startOf('hour').add(10, 'minutes').valueOf(),
 
                     // Area Selection
                     area : {

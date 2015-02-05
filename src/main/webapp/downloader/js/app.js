@@ -4,5 +4,5 @@
  * Define the routes of the single page application.
  */
 
-var app = angular.module('aisdownloader.app', [ 'ngSanitize', 'ui.bootstrap', 'ui.bootstrap.datetimepicker', 'growlNotifications' ]);
+var app = angular.module('aisdownloader.app', [ 'ngSanitize', 'ui.bootstrap', 'growlNotifications' ]);
 

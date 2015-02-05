@@ -18,20 +18,20 @@ angular.module('aisdownloader.app')
 
                 // Initialize source filter
                 $scope.sourceFilter = VS.init({
-                    container  : $('#sourceFilter'),
-                    query      : '',
-                    showFacets : true,
-                    unquotable : [],
-                    callbacks  : {
-                        search : function(query, searchCollection) {
-                            $scope.$apply(function() {
+                    container: $('#sourceFilter'),
+                    query: '',
+                    showFacets: true,
+                    unquotable: [],
+                    callbacks: {
+                        search: function (query, searchCollection) {
+                            $scope.$apply(function () {
                                 $scope.updateSourceFilter(true);
                             });
                         },
-                        facetMatches : function(callback) {
-                            callback([ 'type', 'bs', 'country', 'region' ], {preserveOrder: true});
+                        facetMatches: function (callback) {
+                            callback(['type', 'bs', 'country', 'region'], {preserveOrder: true});
                         },
-                        valueMatches : function(facet, searchTerm, callback) {
+                        valueMatches: function (facet, searchTerm, callback) {
                             switch (facet) {
                                 case 'type':
                                     callback(sourceTypes, {preserveOrder: true});
@@ -46,20 +46,20 @@ angular.module('aisdownloader.app')
 
                 // Initialize target filter
                 $scope.targetFilter = VS.init({
-                    container  : $('#targetFilter'),
-                    query      : '',
-                    showFacets : true,
-                    unquotable : [],
-                    callbacks  : {
-                        search : function(query, searchCollection) {
-                            $scope.$apply(function() {
+                    container: $('#targetFilter'),
+                    query: '',
+                    showFacets: true,
+                    unquotable: [],
+                    callbacks: {
+                        search: function (query, searchCollection) {
+                            $scope.$apply(function () {
                                 $scope.updateTargetFilter(true);
                             });
                         },
-                        facetMatches : function(callback) {
-                            callback([ 'country', 'mmsi', 'name', 'type' ], {preserveOrder: true});
+                        facetMatches: function (callback) {
+                            callback(['country', 'mmsi', 'name', 'type'], {preserveOrder: true});
                         },
-                        valueMatches : function(facet, searchTerm, callback) {
+                        valueMatches: function (facet, searchTerm, callback) {
                             switch (facet) {
                                 case 'country':
                                     callback(countryList, {preserveOrder: true});
@@ -84,7 +84,7 @@ angular.module('aisdownloader.app')
             /**
              * Called when the source filter has been updated
              */
-            $scope.updateSourceFilter = function(updateDownloadUrl) {
+            $scope.updateSourceFilter = function (updateDownloadUrl) {
                 // Reset filter params
                 $scope.params.sourceTxt = $scope.sourceFilter.searchBox.value();
                 $scope.params.sourceBs = [];
@@ -113,11 +113,11 @@ angular.module('aisdownloader.app')
             /**
              * Called when the target filter has been updated
              */
-            // ****************************************
-            // ** Target Filtering
-            // ****************************************
+                // ****************************************
+                // ** Target Filtering
+                // ****************************************
 
-            $scope.updateTargetFilter = function(updateDownloadUrl) {
+            $scope.updateTargetFilter = function (updateDownloadUrl) {
                 // Reset filter params
                 $scope.params.targetTxt = $scope.targetFilter.searchBox.value();
                 $scope.params.targetCountries = [];
@@ -148,6 +148,34 @@ angular.module('aisdownloader.app')
             // ** Time interval
             // ****************************************
 
+            $scope.$watch(
+                function () {
+                    return $scope.params.startDate;
+                },
+                function (a) {
+                    $scope.validateTimeInterval(true);
+                },
+                true);
+
+            $scope.$watch(
+                function () {
+                    return $scope.params.endDate;
+                },
+                function (a) {
+                    $scope.validateTimeInterval(false);
+                },
+                true);
+
+            $scope.validateTimeInterval = function (startDateUpdated) {
+
+                if (startDateUpdated && $scope.params.startDate > $scope.params.endDate) {
+                    $scope.params.endDate = moment($scope.params.startDate).add(10, 'minutes').valueOf()
+                } else if (!startDateUpdated && $scope.params.startDate > $scope.params.endDate) {
+                    $scope.params.startDate = moment($scope.params.endDate).add(-10, 'minutes').valueOf()
+                }
+
+                $scope.updateDownloadUrl();
+            };
 
             /**
              * Called when the start or end time is updated
@@ -166,9 +194,14 @@ angular.module('aisdownloader.app')
              * Called when the area has been updated
              * @param coordinates the new coordinates
              */
-            $scope.updateArea = function(coordinates) {
-                function max(m1, m2) { return (m2 === undefined) ? m1 : Math.max(m1, m2); }
-                function min(m1, m2) { return (m2 === undefined) ? m1 : Math.min(m1, m2); }
+            $scope.updateArea = function (coordinates) {
+                function max(m1, m2) {
+                    return (m2 === undefined) ? m1 : Math.max(m1, m2);
+                }
+
+                function min(m1, m2) {
+                    return (m2 === undefined) ? m1 : Math.min(m1, m2);
+                }
 
                 $scope.params.area.maxLat = $scope.params.area.maxLon = $scope.params.area.minLat = $scope.params.area.minLon = undefined;
                 if (coordinates && coordinates.length > 0) {
@@ -193,7 +226,7 @@ angular.module('aisdownloader.app')
              * Returns if the area is well-defined
              * @returns {*}
              */
-            $scope.areaDefined = function() {
+            $scope.areaDefined = function () {
                 var a = $scope.params.area;
                 return a.maxLat && a.maxLon && a.minLat && a.minLon;
             };
@@ -203,7 +236,9 @@ angular.module('aisdownloader.app')
             // ****************************************
 
             $scope.$watch(
-                function () { return $scope.params.outputFormat; },
+                function () {
+                    return $scope.params.outputFormat;
+                },
                 function (a) {
                     $scope.updateDownloadUrl();
                 },
@@ -229,7 +264,7 @@ angular.module('aisdownloader.app')
             $scope.updateDownloadUrl = function () {
 
                 var url = 'interval=' + moment($scope.params.startDate).utc().format('YYYY-M-DTHH:mm:ss') + 'Z'
-                                 + '/' + moment($scope.params.endDate).utc().format('YYYY-M-DTHH:mm:ss') + 'Z';
+                    + '/' + moment($scope.params.endDate).utc().format('YYYY-M-DTHH:mm:ss') + 'Z';
 
                 var filter = false;
                 if ($scope.params.sourceBs.length > 0) {
@@ -268,7 +303,7 @@ angular.module('aisdownloader.app')
                 if ($scope.areaDefined()) {
                     var a = $scope.params.area;
                     url += '&box=' + a.maxLat.toFixed(3) + ',' + a.minLon.toFixed(3) + ','
-                        + a.minLat.toFixed(3) + ',' + a.maxLon.toFixed(3);
+                    + a.minLat.toFixed(3) + ',' + a.maxLon.toFixed(3);
                 }
 
                 if ($scope.params.outputFormat != 'raw') {
@@ -288,8 +323,10 @@ angular.module('aisdownloader.app')
 
                 AisQueryService.execute(
                     $scope.downloadUrl,
-                    function () {},
-                    function () {});
+                    function () {
+                    },
+                    function () {
+                    });
 
                 AisQueryService.saveSearchParams($scope.params);
                 growlNotifications.add('Download Scheduled', 'info', 2000);
@@ -303,8 +340,18 @@ angular.module('aisdownloader.app')
 
             $scope.reset = function () {
                 AisQueryService.reset();
-            }
+            };
 
+            /**
+             * Main search method
+             */
+            $scope.copy = function () {
+                $scope.updateSourceFilter(false);
+                $scope.updateTargetFilter(false);
+                $scope.updateDownloadUrl();
+                window.prompt("Copy to clipboard:",
+                    'https://ais2.e-navigation.net/aisview/rest/store/query?' + $scope.downloadUrl);
+            }
         }])
 
 

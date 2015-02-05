@@ -16,7 +16,7 @@
     <link href="ext/documentcloud-visualsearch/css/visualsearch.css" rel="stylesheet">
     <link href="ext/documentcloud-visualsearch/css/visualsearch-datauri.css" rel="stylesheet">
 
-    <link href="ext/angular-bootstrap-datetimepicker-0.8.3/datetimepicker.css" rel="stylesheet">
+    <link href="ext/bootstrap-datetimepicker-4.0.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 
     <link href="css/app.css" rel="stylesheet">
 
@@ -49,23 +49,20 @@
             </div>
 
             <div class="row query-section">
-                <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1">
+                <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1" style="margin-top: 5px;">
                     <label>Time</label>
                 </div>
-                <div class="col-xs-8 col-sm-10 col-md-11 col-lg-11 input-group" style="padding-top: 8px">
-                    <span class="dropdown">
-                        <a  class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="#">{{params.startDate | date:'yyyy-MM-dd HH:mm Z'}}</a>
-                        <ul class="dropdown-menu" role="menu">
-                            <datetimepicker ng-model="params.startDate" data-on-set-time="onTimeSet(newDate, oldDate)"></datetimepicker>
-                        </ul>
-                    </span>
-                    <span>&nbsp;-&nbsp;</span>
-                    <span class="dropdown">
-                        <a  class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">{{params.endDate | date:'yyyy-MM-dd HH:mm Z'}}</a>
-                        <ul class="dropdown-menu" role="menu">
-                            <datetimepicker ng-model="params.endDate" data-on-set-time="onTimeSet(newDate, oldDate)"></datetimepicker>
-                        </ul>
-                    </span>
+                <div class="col-xs-8 col-sm-5 col-md-4 col-lg-3" style="padding-top: 8px; margin-left: -14px;">
+                    <input type="text"
+                           ps-datetime-picker
+                           date="params.startDate"
+                           class="form-control">
+                </div>
+                <div class="col-xs-8 col-sm-5 col-md-4 col-lg-3" style="padding-top: 8px">
+                    <input type="text"
+                           ps-datetime-picker
+                           date="params.endDate"
+                           class="form-control">
                 </div>
             </div>
 
@@ -74,7 +71,7 @@
                     <label>Area</label>
                 </div>
                 <div class="col-xs-8 col-sm-10 col-md-11 col-lg-11 input-group">
-                    <div ais-map area="params.area" style="width: 100%; height: 300px;"></div>
+                    <div ais-map area="params.area" style="width: 100%; height: 300px; margin-top: 8px"></div>
                 </div>
             </div>
             <div class="row query-section">
@@ -113,9 +110,18 @@
 
             <div class="row query-section" style="margin-top: 20px">
                 <div class="col-xs-offset-4 col-sm-offset-2 col-md-offset-1 col-lg-offset-1 col-xs-8 col-sm-8 col-md-6 col-lg-6 input-group">
-                    <button type="button" class="btn btn-primary" ng-click="download()">Download</button>&nbsp;
-                    <button type="button" class="btn btn-default" ng-click="clear()">Clear</button>&nbsp;
-                    <button type="button" class="btn btn-default" ng-click="reset()">Reset</button>
+                    <button type="button" class="btn btn-primary" ng-click="download()">
+                        <span class="glyphicon glyphicon-download-alt"></span> Download
+                    </button>&nbsp;
+                    <button type="button" class="btn btn-default" ng-click="clear()">
+                        <span class="glyphicon glyphicon-remove-sign"></span> Clear Settings
+                    </button>&nbsp;
+                    <button type="button" class="btn btn-default" ng-click="reset()">
+                        <span class="glyphicon glyphicon-trash"></span> Reset
+                    </button>&nbsp;
+                    <button type="button" class="btn btn-default" ng-click="copy()">
+                        <span class="glyphicon glyphicon-copy"></span> Copy URL
+                    </button>&nbsp;
                 </div>
             </div>
 
@@ -131,8 +137,8 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-    <script src="ext/angular-bootstrap-datetimepicker-0.8.3/datetimepicker.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js"></script>
+    <script src="ext/bootstrap-datetimepicker-4.0.0/js/bootstrap-datetimepicker.min.js"></script>
     <script src="ext/angular-growl-notifications-0.7.0/growl-notifications.min.js"></script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js"></script>
