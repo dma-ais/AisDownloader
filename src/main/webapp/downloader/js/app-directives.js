@@ -108,6 +108,10 @@ angular.module('aisdownloader.app')
                     }
                 }
 
+                scope.removeArea = function () {
+                    scope.area.maxLat = scope.area.maxLon = scope.area.minLat = scope.area.minLon = undefined;
+                };
+
                 /*********************************/
                 /* Handle changed location       */
                 /*********************************/
