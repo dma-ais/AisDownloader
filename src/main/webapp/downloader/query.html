@@ -30,6 +30,8 @@
     <div class="content">
         <div id="aisQuery" class="container" ng-controller="AisQueryCtrl" ng-init="init()">
 
+
+            <!-- Source filter -->
             <div class="row query-section">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1">
                     <label>Source</label>
@@ -39,6 +41,8 @@
                 </div>
             </div>
 
+
+            <!-- Target filter -->
             <div class="row query-section">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1">
                     <label>Target</label>
@@ -48,46 +52,51 @@
                 </div>
             </div>
 
+
+            <!-- Time selection -->
             <div class="row query-section">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1" style="margin-top: 5px;">
                     <label>Time</label>
                 </div>
                 <div class="col-xs-8 col-sm-5 col-md-4 col-lg-3" style="padding-top: 8px; margin-left: -14px;">
-                    <input type="text"
-                           ps-datetime-picker
-                           date="params.startDate"
-                           class="form-control">
+                    <input type="text" class="form-control"
+                           ps-datetime-picker date="params.startDate">
                 </div>
                 <div class="col-xs-8 col-sm-5 col-md-4 col-lg-3" style="padding-top: 8px">
-                    <input type="text"
-                           ps-datetime-picker
-                           date="params.endDate"
-                           class="form-control">
+                    <input type="text" class="form-control"
+                           ps-datetime-picker date="params.endDate">
                 </div>
             </div>
 
+
+            <!-- Area filter -->
             <div class="row query-section">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1">
                     <label>Area</label>
                 </div>
-                <div class="col-xs-8 col-sm-10 col-md-11 col-lg-11 input-group">
-                    <div ais-map area="params.area" style="width: 100%; height: 300px; margin-top: 8px"></div>
+                <div class="col-xs-8 col-sm-10 col-md-11 col-lg-11 input-group form-group">
+                    <input latitude type="text" class="form-control input-sm area-pos"  style="width: 100px;" ng-model="params.area.minLat"  placeholder="LL Lat">
+                    <input longitude type="text" class="form-control input-sm area-pos" style="width: 100px; margin-right: 20px" ng-model="params.area.minLon"  placeholder="LL Lon">
+                    <input latitude type="text" class="form-control input-sm area-pos"  style="width: 100px;" ng-model="params.area.maxLat"  placeholder="UR lat">
+                    <input longitude type="text" class="form-control input-sm area-pos" style="width: 100px; margin-right: 20px" ng-model="params.area.maxLon"  placeholder="UR lon">
+                    <button type="button" class="btn btn-default btn-sm" style="margin-top: 5px; margin-right: 5px"
+                            ng-model="showAreaMap" btn-checkbox>
+                        <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+                    </button>
+                    <button type="button area-pos" class="btn btn-default btn-sm"  style="margin-top: 5px" ng-click="clearArea()">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </button>
                 </div>
             </div>
-            <div class="row query-section">
+            <div class="row" ng-if="showAreaMap">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1"></div>
-                <div class="col-xs-8 col-sm-10 col-md-11 col-lg-11 input-group form-group">
-                        <input latitude type="text" class="form-control input-sm area-pos" style="width: 100px;" ng-model="params.area.minLat"  placeholder="LL Lat">
-                        <input longitude type="text" class="form-control input-sm area-pos" style="width: 100px; margin-right: 30px" ng-model="params.area.minLon"  placeholder="LL Lon">
-                        <input latitude type="text" class="form-control input-sm area-pos" style="width: 100px;" ng-model="params.area.maxLat"  placeholder="UR lat">
-                        <input longitude type="text" class="form-control input-sm area-pos" style="width: 100px;" ng-model="params.area.maxLon"  placeholder="UR lon">
-                        <button type="button area-pos" class="btn btn-default btn-sm" style="margin-top: 5px"
-                                ng-click="clearArea()">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                        </button>
+                <div class="col-xs-8 col-sm-10 col-md-11 col-lg-11 input-group">
+                    <div ais-map area="params.area" style="width: 100%; height: 300px;"></div>
                 </div>
             </div>
 
+
+            <!-- Output format -->
             <div class="row query-section">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1">
                     <label>Output</label>
@@ -108,6 +117,7 @@
             </div>
 
 
+            <!-- Download Buttons -->
             <div class="row query-section" style="margin-top: 20px">
                 <div class="col-xs-offset-4 col-sm-offset-2 col-md-offset-1 col-lg-offset-1 col-xs-8 col-sm-8 col-md-6 col-lg-6 input-group">
                     <button type="button" class="btn btn-primary" ng-click="download()">

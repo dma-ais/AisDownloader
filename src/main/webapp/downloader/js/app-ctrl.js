@@ -113,9 +113,9 @@ angular.module('aisdownloader.app')
             /**
              * Called when the target filter has been updated
              */
-                // ****************************************
-                // ** Target Filtering
-                // ****************************************
+            // ****************************************
+            // ** Target Filtering
+            // ****************************************
 
             $scope.updateTargetFilter = function (updateDownloadUrl) {
                 // Reset filter params
@@ -177,18 +177,12 @@ angular.module('aisdownloader.app')
                 $scope.updateDownloadUrl();
             };
 
-            /**
-             * Called when the start or end time is updated
-             * @param newDate
-             * @param oldDate
-             */
-            $scope.onTimeSet = function (newDate, oldDate) {
-            };
 
             // ****************************************
             // ** Area Filtering
             // ****************************************
 
+            $scope.showAreaMap = false;
 
             /**
              * Called when the area has been updated

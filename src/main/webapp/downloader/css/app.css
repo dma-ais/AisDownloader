@@ -66,6 +66,7 @@ growl-notification{
     margin-right: auto;
     margin-left: auto;
     max-width: 1200px;
+    min-height: 500px;
     overflow: hidden;
     padding: 10px;
     background-color: white;
@@ -96,6 +97,7 @@ growl-notification{
     height: 100%;
     position: relative;
     background-color: #b5d0d0;
+    border: 1px solid lightgray;
 }
 
 .area-map-btn {
