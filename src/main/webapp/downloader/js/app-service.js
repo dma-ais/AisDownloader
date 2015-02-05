@@ -62,11 +62,11 @@ angular.module('aisdownloader.app')
 
                     // Area Selection
                     area : {
-                    maxLat: undefined,
+                        maxLat: undefined,
                         maxLon : undefined,
                         minLat: undefined,
                         minLon : undefined
-                },
+                    },
 
                     // Output Format
                     outputFormat : 'raw'

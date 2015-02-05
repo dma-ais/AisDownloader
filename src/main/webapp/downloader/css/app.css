@@ -92,14 +92,18 @@ growl-notification{
 }
 
 .area-map {
-    height: 200px;
     width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: #b5d0d0;
 }
 
-@media (min-width: 1000px) {
-    .area-map {
-        height: 300px;
-    }
+.area-map-btn {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    z-index: 800;
 }
 
 .area-pos {
@@ -107,8 +111,9 @@ growl-notification{
     margin-right: 5px;
 }
 
-.leaflet-top {
-    z-index: 900!important;
+/* Hide OSM link */
+.olControlNoSelect {
+    display: none;
 }
 
 .result-files {

@@ -6,8 +6,8 @@ angular.module('aisdownloader.app')
     /**
      * The main AIS Query controller
      */
-    .controller('AisQueryCtrl', ['$scope', '$timeout', 'leafletData', 'growlNotifications', 'AisQueryService',
-        function ($scope, $timeout, leafletData, growlNotifications, AisQueryService) {
+    .controller('AisQueryCtrl', ['$scope', '$timeout', 'growlNotifications', 'AisQueryService',
+        function ($scope, $timeout, growlNotifications, AisQueryService) {
             'use strict';
 
             // ****************************************
@@ -161,42 +161,6 @@ angular.module('aisdownloader.app')
             // ** Area Filtering
             // ****************************************
 
-            L.drawLocal.draw.toolbar.buttons.rectangle = 'Select AIS area';
-            $scope.mapCenter = { lat: 55.676, lng: 12.568, zoom: 6 };
-            $scope.mapControls = {
-                draw: { polygon: false, polyline: false, circle: false, marker: false }
-            };
-
-            $scope.$watch(
-                function () { return $scope.params.area; },
-                function (a) {
-                    /* TODO: Update map */
-                    $scope.updateDownloadUrl();
-                },
-                true);
-
-            // Initialize the map
-            leafletData.getMap().then(function(map) {
-                var featureGroup = $scope.mapControls.edit.featureGroup;
-                map.on('draw:created', function (e) {
-                    featureGroup.clearLayers();
-                    var layer = e.layer;
-                    featureGroup.addLayer(layer);
-                    $scope.updateArea(layer.toGeoJSON().geometry.coordinates[0]);
-                });
-                map.on('draw:edited', function (e) {
-                    var layers = e.layers;
-                    layers.eachLayer(function (layer) {
-                        $scope.updateArea(layer.toGeoJSON().geometry.coordinates[0]);
-                    });
-                });
-                map.on('draw:deleted', function (e) {
-                    var layers = e.layers;
-                    layers.eachLayer(function (layer) {
-                        $scope.updateArea(undefined);
-                    });
-                });
-            });
 
             /**
              * Called when the area has been updated
@@ -223,7 +187,6 @@ angular.module('aisdownloader.app')
              */
             $scope.clearArea = function () {
                 $scope.updateArea(undefined);
-                $scope.mapControls.edit.featureGroup.clearLayers();
             };
 
             /**
@@ -336,7 +299,6 @@ angular.module('aisdownloader.app')
                 $scope.params = AisQueryService.clearParams();
                 $scope.sourceFilter.searchBox.value($scope.params.sourceTxt || '');
                 $scope.targetFilter.searchBox.value($scope.params.targetTxt || '');
-                $scope.mapControls.edit.featureGroup.clearLayers();
             };
 
             $scope.reset = function () {
