@@ -34,7 +34,7 @@
             <!-- Source filter -->
             <div class="row query-section">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1">
-                    <label>Source</label>
+                    <label tooltip="Define an AIS source filter">Source</label>
                 </div>
                 <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 input-group">
                     <div id="sourceFilter" class="visual-search"></div>
@@ -45,7 +45,7 @@
             <!-- Target filter -->
             <div class="row query-section">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1">
-                    <label>Target</label>
+                    <label tooltip="Define a vessel target filter">Target</label>
                 </div>
                 <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 input-group">
                     <div id="targetFilter" class="visual-search"></div>
@@ -56,7 +56,7 @@
             <!-- Time selection -->
             <div class="row query-section">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1" style="margin-top: 5px;">
-                    <label>Time</label>
+                    <label tooltip="Define the time interval">Time</label>
                 </div>
                 <div class="col-xs-8 col-sm-5 col-md-4 col-lg-3" style="padding-top: 8px; margin-left: -14px;">
                     <input type="text" class="form-control"
@@ -72,9 +72,9 @@
             <!-- Area filter -->
             <div class="row query-section">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1">
-                    <label>Area</label>
+                    <label tooltip="Define the AIS area">Area</label>
                 </div>
-                <div class="col-xs-8 col-sm-10 col-md-11 col-lg-11 input-group form-group">
+                <div class="col-xs-8 col-sm-10 col-md-11 col-lg-11 input-group">
                     <input latitude type="text" class="form-control input-sm area-pos"  style="width: 100px;" ng-model="params.area.minLat"  placeholder="LL Lat">
                     <input longitude type="text" class="form-control input-sm area-pos" style="width: 100px; margin-right: 20px" ng-model="params.area.minLon"  placeholder="LL Lon">
                     <input latitude type="text" class="form-control input-sm area-pos"  style="width: 100px;" ng-model="params.area.maxLat"  placeholder="UR lat">
@@ -83,12 +83,12 @@
                             ng-model="showAreaMap" btn-checkbox>
                         <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
                     </button>
-                    <button type="button area-pos" class="btn btn-default btn-sm"  style="margin-top: 5px" ng-click="clearArea()">
+                    <button type="button" class="btn btn-default btn-sm"  style="margin-top: 5px" ng-click="clearArea()">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </button>
                 </div>
             </div>
-            <div class="row" ng-if="showAreaMap">
+            <div class="row query-section" ng-if="showAreaMap">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1"></div>
                 <div class="col-xs-8 col-sm-10 col-md-11 col-lg-11 input-group">
                     <div ais-map area="params.area" style="width: 100%; height: 300px;"></div>
@@ -99,20 +99,29 @@
             <!-- Output format -->
             <div class="row query-section">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1">
-                    <label>Output</label>
+                    <label tooltip="Specify the output format">Output</label>
                 </div>
-                <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 input-group">
+                <div class="col-xs-8 col-sm-10 col-md-11 col-lg-11 input-group">
                     <div class="btn-group">
-                        <label class="btn btn-default btn-sm" ng-model="params.outputFormat" btn-radio="'raw'">
-                            Raw
-                        </label>
-                        <label class="btn btn-default btn-sm" ng-model="params.outputFormat" btn-radio="'OUTPUT_TO_KML'">
-                            KML
-                        </label>
-                        <label class="btn btn-default btn-sm" ng-model="params.outputFormat" btn-radio="'OUTPUT_TO_HTML'">
-                            HTML
-                        </label>
+                        <label class="btn btn-default btn-sm" ng-model="params.outputFormat" btn-radio="'raw'">Raw</label>
+                        <label class="btn btn-default btn-sm" ng-model="params.outputFormat" btn-radio="'prefixed_sentences'">Prefixed Data</label>
+                        <label class="btn btn-default btn-sm" ng-model="params.outputFormat" btn-radio="'OUTPUT_TO_KML'">KML</label>
+                        <label class="btn btn-default btn-sm" ng-model="params.outputFormat" btn-radio="'OUTPUT_TO_HTML'">HTML</label>
                     </div>
+                </div>
+            </div>
+
+
+            <!-- Limit -->
+            <div class="row query-section">
+                <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1">
+                    <label tooltip="Limit the number of AIS records">Limit</label>
+                </div>
+                <div class="col-xs-8 col-sm-10 col-md-11 col-lg-11 input-group form-group">
+                    <input type="number" class="form-control input-sm"  style="width: 100px;" ng-model="params.limit">
+                    <button type="button" class="btn btn-default btn-sm"  min="0" style="margin-left: 5px" ng-click="params.limit = undefined;">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </button>
                 </div>
             </div>
 

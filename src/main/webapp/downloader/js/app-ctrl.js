@@ -304,6 +304,10 @@ angular.module('aisdownloader.app')
                     url += '&output=' + $scope.params.outputFormat;
                 }
 
+                if ($scope.params.limit) {
+                    url += '&limit=' + $scope.params.limit;
+                }
+
                 $scope.downloadUrl = url;
             };
 

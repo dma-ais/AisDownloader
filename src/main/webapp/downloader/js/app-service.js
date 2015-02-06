@@ -69,7 +69,8 @@ angular.module('aisdownloader.app')
                     },
 
                     // Output Format
-                    outputFormat : 'raw'
+                    outputFormat : 'raw',
+                    limit: undefined
                 }
             },
 
