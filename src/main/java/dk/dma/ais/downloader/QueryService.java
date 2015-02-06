@@ -69,7 +69,6 @@ public class QueryService {
     private static final int EXECUTOR_POOL_SIZE = 10;
     private static final long FILE_EXPIRY_MS = 1000L * 60L * 60L * 4L; // 4 hours
     private final static Logger log = Logger.getLogger(QueryService.class.getName());
-    private final static String AIS_VIEW_URL = "https://ais2.e-navigation.net/aisview/rest/store/query?";
     private final static String DOWNLOAD_SUFFIX = ".download";
 
     private Path repoRoot;
@@ -201,7 +200,7 @@ public class QueryService {
     @ResponseBody
     public RepoFile executeQuery(@PathVariable("clientId") String clientId,
                                  @RequestParam("params") String params) throws IOException {
-        String url = AIS_VIEW_URL + params;
+        String url = Application.AIS_VIEW_URL + params;
 
         // Create the client ID folder
         Path dir = repoRoot.resolve(clientId);

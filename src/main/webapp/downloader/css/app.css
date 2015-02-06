@@ -101,6 +101,13 @@ growl-notification{
     position: relative;
 }
 
+.ui-select-choices {
+    width: 200px!important;
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}
+
 .query-section {
     margin-top: 10px;
 }
