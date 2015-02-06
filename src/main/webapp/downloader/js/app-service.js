@@ -83,19 +83,19 @@ angular.module('aisdownloader.app')
             },
 
             execute: function(params, success, error) {
-                $http.get('/query/execute/' + this.clientId() + '?params=' + encodeURIComponent(params))
+                $http.get('/downloader/query/execute/' + this.clientId() + '?params=' + encodeURIComponent(params))
                     .success(success)
                     .error(error);
             },
 
             deleteFile: function(file, success, error) {
-                $http.get('/query/delete/' + file)
+                $http.get('/downloader/query/delete/' + file)
                     .success(success)
                     .error(error);
             },
 
             listFiles: function(success, error) {
-                $http.get('/query/list/' + this.clientId())
+                $http.get('/downloader/query/list/' + this.clientId())
                     .success(success)
                     .error(error);
             }

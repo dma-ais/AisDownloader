@@ -262,38 +262,31 @@ angular.module('aisdownloader.app')
                 var url = 'interval=' + moment($scope.params.startDate).utc().format('YYYY-M-DTHH:mm:ss') + 'Z'
                     + '/' + moment($scope.params.endDate).utc().format('YYYY-M-DTHH:mm:ss') + 'Z';
 
-                var filter = false;
+                var filter = '';
                 if ($scope.params.sourceBs.length > 0) {
-                    url += '&s.bs=' + encodeValues($scope.params.sourceBs).join();
-                    filter = true;
+                    filter += ' & s.bs=' + encodeValues($scope.params.sourceBs).join();
                 }
                 if ($scope.params.sourceCountries.length > 0) {
-                    url += '&s.country=' + $scope.params.sourceCountries.join();
-                    filter = true;
+                    filter += ' & s.country=' + $scope.params.sourceCountries.join();
                 }
                 if ($scope.params.sourceRegions.length > 0) {
-                    url += '&s.region=' + encodeValues($scope.params.sourceRegions).join();
-                    filter = true;
+                    filter += ' & s.region=' + encodeValues($scope.params.sourceRegions).join();
                 }
 
                 if ($scope.params.targetCountries.length > 0) {
-                    url += '&t.country=' + $scope.params.targetCountries.join();
-                    filter = true;
+                    filter += ' & t.country=' + $scope.params.targetCountries.join();
                 }
                 if ($scope.params.targetMmsi.length > 0) {
-                    url += '&t.mmsi=' + encodeValues($scope.params.targetMmsi).join();
-                    filter = true;
+                    filter += ' & t.mmsi=' + encodeValues($scope.params.targetMmsi).join();
                 }
                 if ($scope.params.targetNames.length > 0) {
-                    url += '&t.name=' + encodeValues($scope.params.targetNames).join();
-                    filter = true;
+                    filter += ' & t.name=' + encodeValues($scope.params.targetNames).join();
                 }
                 if ($scope.params.targetTypes.length > 0) {
-                    url += '&t.type=' + $scope.params.targetTypes.join();
-                    filter = true;
+                    filter += ' & t.type=' + $scope.params.targetTypes.join();
                 }
-                if (filter) {
-                    url += '&filter';
+                if (filter.length > 0) {
+                    url += '&filter=' + encodeURIComponent(filter.substring(3));
                 }
 
                 if ($scope.areaDefined()) {
@@ -412,7 +405,7 @@ angular.module('aisdownloader.app')
              * @param file the file to open
              */
             $scope.openFile = function (file) {
-                window.open('/query/file/' + file.path);
+                window.open('/downloader/query/file/' + file.path);
             };
 
             /**

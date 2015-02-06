@@ -59,7 +59,7 @@ import java.util.logging.Logger;
  * </p>
  */
 @Controller
-@RequestMapping("/query")
+@RequestMapping("/downloader/query")
 @SuppressWarnings("unused")
 public class QueryService {
 
@@ -241,6 +241,8 @@ public class QueryService {
             return ".html";
         } else if (url.contains("table")) {
             return ".csv";
+        } else if (url.contains("json")) {
+            return ".json";
         }
         return ".txt";
     }
