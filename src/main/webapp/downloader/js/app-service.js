@@ -70,6 +70,10 @@ angular.module('aisdownloader.app')
 
                     // Output Format
                     outputFormat : 'raw',
+                    outputTableFields: [ 'lat', 'lon', 'time', 'mmsi' ],
+                    outputTableSeparator : ';',
+                    outputTableHeader: true,
+
                     limit: undefined
                 }
             },

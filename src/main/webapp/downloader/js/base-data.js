@@ -281,3 +281,13 @@ countryList = [
 	{label:"YEMEN",value:"YEM"},
 	{label:"ZAMBIA",value:"ZMB"},
 	{label:"ZIMBABWE",value:"ZWE"}];
+
+
+outputTableFields = [
+    { label:"Longitude", value:"lon" },
+    { label:"Latitude", value:"lat" },
+    { label:"MMSI", value:"mmsi" },
+    { label:"Time", value:"time" },
+    { label:"Timestamp", value:"timestamp" }
+];
+

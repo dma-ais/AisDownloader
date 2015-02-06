@@ -238,6 +238,8 @@ angular.module('aisdownloader.app')
                 },
                 true);
 
+            $scope.outputTableFields = outputTableFields;
+
             // ****************************************
             // ** Downloading
             // ****************************************
@@ -303,6 +305,13 @@ angular.module('aisdownloader.app')
                 if ($scope.params.outputFormat != 'raw') {
                     url += '&output=' + $scope.params.outputFormat;
                 }
+                if ($scope.params.outputFormat == 'table') {
+                    url += '&columns=' + $scope.params.outputTableFields.join(';');
+                    url += '&separator=' + $scope.params.outputTableSeparator;
+                    if (!$scope.params.outputTableHeader) {
+                        url += '&noHeader';
+                    }
+                }
 
                 if ($scope.params.limit) {
                     url += '&limit=' + $scope.params.limit;
@@ -311,6 +320,8 @@ angular.module('aisdownloader.app')
                 $scope.downloadUrl = url;
             };
 
+            $scope.downloadDisabled = false;
+
             /**
              * Main search method
              */
@@ -318,6 +329,7 @@ angular.module('aisdownloader.app')
                 $scope.updateSourceFilter(false);
                 $scope.updateTargetFilter(false);
                 $scope.updateDownloadUrl();
+                $scope.downloadDisabled = true;
 
                 AisQueryService.execute(
                     $scope.downloadUrl,
@@ -328,6 +340,11 @@ angular.module('aisdownloader.app')
 
                 AisQueryService.saveSearchParams($scope.params);
                 growlNotifications.add('Download Scheduled', 'info', 2000);
+
+                // Re-enable the Download button after 2 seconds to avoid double-clicks
+                $timeout(function () {
+                    $scope.downloadDisabled = false;
+                }, 2000);
             };
 
             $scope.clear = function () {

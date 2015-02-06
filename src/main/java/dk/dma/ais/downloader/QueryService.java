@@ -214,7 +214,7 @@ public class QueryService {
         Date now = new Date();
         Path file = Files.createTempFile(
                 dir,
-                new SimpleDateFormat("yyyy-MM-dd HHmm ").format(now),
+                new SimpleDateFormat("MM-dd HHmmss ").format(now),
                 fileType(url) + DOWNLOAD_SUFFIX);
 
 
@@ -240,6 +240,8 @@ public class QueryService {
             return ".kml";
         } else if (url.contains("OUTPUT_TO_HTML")) {
             return ".html";
+        } else if (url.contains("table")) {
+            return ".csv";
         }
         return ".txt";
     }

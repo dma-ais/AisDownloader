@@ -84,6 +84,23 @@ growl-notification{
     box-sizing: content-box!important;
 }
 
+/** Adjustments for the select2 control */
+.select2 > .select2-choice.ui-select-match {
+    height: 29px;
+}
+
+.selectize-control > .selectize-dropdown {
+    top: 36px;
+}
+
+.ui-select-toggle {
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    position: relative;
+}
+
 .query-section {
     margin-top: 10px;
 }
