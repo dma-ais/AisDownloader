@@ -49,5 +49,6 @@ The base command for running dmadk/ais-downloader is:
 
 If, say, you want run dmadk/ais-downloader such that it binds to localhost:8081 and preserves the downloaded files under /tmp/aisdownloader on the host, use:
 
-    sudo docker run -d -p 8081:8080 -e REPO_PATH=/var/aisdownloader -v /tmp/aisdownloader:/var/aisdownloader dmadk/ais-downloader
+    sudo docker run -d -p 8081:8080 -e REPO_PATH=/var/aisdownloader \
+         -v /tmp/aisdownloader:/var/aisdownloader dmadk/ais-downloader
 
