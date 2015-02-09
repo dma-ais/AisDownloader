@@ -1,12 +1,17 @@
 
 if [ -z "${AIS_VIEW_URL}" ]; then
 	AIS_VIEW_URLP=""
-
 else
-	AIS_VIEW_URLP="--ais.view.url=https://ais2.e-navigation.net/aisview/rest/store/query?"
+	AIS_VIEW_URLP="--ais.view.url=${AIS_VIEW_URL}"
+fi
+
+if [ -z "${REPO_PATH}" ]; then
+	REPO_PATHP=""
+else
+	REPO_PATHP="--repo.root=${REPO_PATH}"
 fi
 
 
 LATEST=`ls /archive/target/ais-downloader*SNAPSHOT.war`
 
-java -jar $LATEST $AIS_VIEW_URLP
+java -jar $LATEST $AIS_VIEW_URLP $REPO_PATHP
