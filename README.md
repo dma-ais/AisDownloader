@@ -47,8 +47,11 @@ The base command for running dmadk/ais-downloader is:
 
     sudo docker run dmadk/ais-downloader
 
-If, say, you want run dmadk/ais-downloader such that it binds to localhost:8081 and preserves the downloaded files under /tmp/aisdownloader on the host, use:
+For a more advanced example, if you want run dmadk/ais-downloader such that it binds to localhost:8081, preserves the downloaded files under /tmp/aisdownloader on the host,
+and adds a hello:mum basic authentication header to the AIS Store URL, use:
 
-    sudo docker run -d -p 8081:8080 -e REPO_PATH=/var/aisdownloader \
+    sudo docker run -d -p 8081:8080 \
+         -e REPO_PATH=/var/aisdownloader \
+         -e AUTH_HEADER="Basic aGVsbG86bXVt"
          -v /tmp/aisdownloader:/var/aisdownloader dmadk/ais-downloader
 
