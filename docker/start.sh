@@ -11,7 +11,12 @@ else
 	REPO_PATHP="--repo.root=${REPO_PATH}"
 fi
 
+if [ -z "${AUTH_HEADER}" ]; then
+	AUTH_HEADERP=""
+else
+	AUTH_HEADERP="--auth.header=${AUTH_HEADER}"
+fi
 
 LATEST=`ls /archive/target/ais-downloader*SNAPSHOT.war`
 
-java -jar $LATEST $AIS_VIEW_URLP $REPO_PATHP
+java -jar $LATEST $AIS_VIEW_URLP $REPO_PATHP AUTH_HEADERP

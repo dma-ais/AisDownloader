@@ -16,7 +16,6 @@
 package dk.dma.ais.downloader;
 
 import dk.dma.ais.packet.AisPacketFilters;
-import org.abego.treelayout.internal.util.java.lang.string.StringUtil;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -48,6 +47,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -84,6 +84,9 @@ public class QueryService {
     @Value("${repo.root:}")
     String repoRootPath;
 
+    @Value("${auth.header:}")
+    String authHeader;
+
     /**
      * Initializes the repository
      */
@@ -106,6 +109,10 @@ public class QueryService {
             } catch (IOException e) {
                 log.log(Level.SEVERE, "Error creating repository dir " + getRepoRoot(), e);
             }
+        }
+
+        if (!StringUtils.isEmpty(authHeader)) {
+            log.info("******** Using auth header: " + Base64.getEncoder().encodeToString(authHeader.getBytes("UTF-8")));
         }
 
         // Initialize process pool
@@ -171,6 +178,11 @@ public class QueryService {
                 URLConnection con = new URL(url).openConnection();
                 con.setConnectTimeout(60 * 1000);       // 1 minute
                 con.setReadTimeout(10 * 60 * 1000);     // 10 minutes
+
+                if (!StringUtils.isEmpty(authHeader)) {
+                    con.setRequestProperty ("Authorization", "Basic " + Base64.getEncoder().encodeToString(authHeader.getBytes("UTF-8")));
+                }
+
                 try (ReadableByteChannel rbc = Channels.newChannel(con.getInputStream());
                      FileOutputStream fos = new FileOutputStream(path.toFile())) {
                     fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
