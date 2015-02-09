@@ -42,7 +42,7 @@
                     <label tooltip="Define an AIS filter">Filter</label>
                 </div>
                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 input-group">
-                    <tabset>
+                    <tabset class="filter-tabs">
 
                         <tab heading="Simple"  select="useAdvancedFilter(false)" active="params.filterType.simple">
                             <div class="filter-tab">
@@ -75,6 +75,9 @@
                                                   spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off"
                                                   ng-model="params.advancedFilter" filter-validate>
                                         </textarea>
+                                        <a href="https://github.com/dma-ais/AisLib#grammar" target="_blank" class="grammar-link">
+                                            <span class="glyphicon glyphicon-book"></span> Filter Grammar
+                                        </a>
                                     </div>
                                 </div>
                             </div>
