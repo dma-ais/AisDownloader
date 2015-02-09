@@ -3,7 +3,7 @@ if [ -z "${AIS_VIEW_URL}" ]; then
 	AIS_VIEW_URLP=""
 
 else
-	AIS_VIEW_URLP="https://ais2.e-navigation.net/aisview/rest/store/query?"
+	AIS_VIEW_URLP="--ais.view.url=https://ais2.e-navigation.net/aisview/rest/store/query?"
 fi
 
 

@@ -16,9 +16,12 @@
 package dk.dma.ais.downloader;
 
 import dk.dma.ais.packet.AisPacketFilters;
+import org.abego.treelayout.internal.util.java.lang.string.StringUtil;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -75,13 +78,28 @@ public class QueryService {
     private Path repoRoot;
     private ExecutorService processPool;
 
+    @Value("${ais.view.url:https://ais2.e-navigation.net/aisview/rest/store/query?}")
+    String aisViewUrl;
+
+    @Value("${repo.root:}")
+    String repoRootPath;
+
     /**
      * Initializes the repository
      */
     @PostConstruct
     public void init() throws Exception {
+
+        log.info("******** Using AIS View URL: " + aisViewUrl);
+
         // Create the repo root directory
-        repoRoot = Paths.get(System.getProperty("user.home")).resolve(".aisdownloader");
+        if (StringUtils.isEmpty(repoRootPath)) {
+            repoRoot = Paths.get(System.getProperty("user.home")).resolve(".aisdownloader");
+        } else {
+            repoRoot = Paths.get(repoRootPath);
+        }
+        log.info("******** Using repo root " + repoRoot);
+
         if (!Files.exists(getRepoRoot())) {
             try {
                 Files.createDirectories(getRepoRoot());
@@ -201,7 +219,7 @@ public class QueryService {
     @ResponseBody
     public RepoFile executeQuery(@PathVariable("clientId") String clientId,
                                  @RequestParam("params") String params) throws IOException {
-        String url = Application.AIS_VIEW_URL + params;
+        String url = aisViewUrl + params;
 
         // Create the client ID folder
         Path dir = repoRoot.resolve(clientId);
