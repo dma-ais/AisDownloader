@@ -47,7 +47,6 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -112,7 +111,7 @@ public class QueryService {
         }
 
         if (!StringUtils.isEmpty(authHeader)) {
-            log.info("******** Using auth header: " + Base64.getEncoder().encodeToString(authHeader.getBytes("UTF-8")));
+            log.info("******** Using auth header: " + authHeader);
         }
 
         // Initialize process pool
@@ -180,7 +179,7 @@ public class QueryService {
                 con.setReadTimeout(10 * 60 * 1000);     // 10 minutes
 
                 if (!StringUtils.isEmpty(authHeader)) {
-                    con.setRequestProperty ("Authorization", "Basic " + Base64.getEncoder().encodeToString(authHeader.getBytes("UTF-8")));
+                    con.setRequestProperty ("Authorization", authHeader);
                 }
 
                 try (ReadableByteChannel rbc = Channels.newChannel(con.getInputStream());
