@@ -39,3 +39,15 @@ A local deployment will setup AIS-Downloader at the following URL:
 
     http://localhost:8080/downloader/query.html
 
+## Docker
+
+The AIS-Downloader is being built at docker.io [https://registry.hub.docker.com/u/dmadk/ais-downloader/](https://registry.hub.docker.com/u/dmadk/ais-downloader/)
+
+The base command for running dmadk/ais-downloader is:
+
+    sudo docker run dmadk/ais-downloader
+
+If, say, you want run dmadk/ais-downloader such that it binds to localhost:8081 and preserves the downloaded files under /tmp/aisdownloader on the host, use:
+
+    sudo docker run -d -p 8081:8080 -e REPO_PATH=/var/aisdownloader -v /tmp/aisdownloader:/var/aisdownloader dmadk/ais-downloader
+
