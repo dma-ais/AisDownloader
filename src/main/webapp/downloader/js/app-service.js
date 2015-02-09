@@ -56,6 +56,10 @@ angular.module('aisdownloader.app')
                     targetNames : [],
                     targetTypes : [],
 
+                    // Advanced filter
+                    advancedFilter: '',
+                    filterType: { simple: true, advanced: false },
+
                     // Time Selection
                     startDate : moment().startOf('hour').valueOf(),
                     endDate : moment().startOf('hour').add(10, 'minutes').valueOf(),
@@ -98,8 +102,13 @@ angular.module('aisdownloader.app')
                 $http.get('/downloader/query/list/' + this.clientId())
                     .success(success)
                     .error(error);
-            }
+            },
 
+            validateFilter: function(filter, success, error) {
+                $http.get('/downloader/query/validate-filter?filter=' + encodeURIComponent(filter))
+                    .success(success)
+                    .error(error);
+            }
         };
     }]);
 

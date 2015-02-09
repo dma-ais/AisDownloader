@@ -42,6 +42,44 @@ angular.module('aisdownloader.app')
         };
     }])
 
+    .directive('filterValidate', ['$timeout', 'AisQueryService', function ($timeout, AisQueryService)  {
+        return {
+            // restrict to an attribute type.
+            restrict: 'A',
+
+            // element must have ng-model attribute.
+            require: 'ngModel',
+
+            link: function (scope, elem, attr, ctrl) {
+
+                var promise = undefined;
+
+                function validateAsync(value) {
+                    if (promise) {
+                        $timeout.cancel(promise);
+                        promise = undefined;
+                    }
+                    promise = $timeout(function () {
+                        AisQueryService.validateFilter(value,
+                            function (valid) {
+                                ctrl.$setValidity('filterValidate', valid);
+                                promise = undefined;
+                            },
+                            function () {
+                                promise = undefined;
+                            }
+                        )
+                    }, 500);
+                }
+
+                ctrl.$parsers.unshift(function (value) {
+                    validateAsync(value);
+                    return value;
+                });
+            }
+        };
+    }])
+
     .directive('aisMap', ['$rootScope', function ($rootScope) {
         'use strict';
 

@@ -16,65 +16,86 @@ angular.module('aisdownloader.app')
 
             $scope.init = function () {
 
-                // Initialize source filter
-                $scope.sourceFilter = VS.init({
-                    container: $('#sourceFilter'),
-                    query: '',
-                    showFacets: true,
-                    unquotable: [],
-                    callbacks: {
-                        search: function (query, searchCollection) {
-                            $scope.$apply(function () {
-                                $scope.updateSourceFilter(true);
-                            });
-                        },
-                        facetMatches: function (callback) {
-                            callback(['type', 'bs', 'country', 'region'], {preserveOrder: true});
-                        },
-                        valueMatches: function (facet, searchTerm, callback) {
-                            switch (facet) {
-                                case 'type':
-                                    callback(sourceTypes, {preserveOrder: true});
-                                    break;
-                                case 'country':
-                                    callback(countryList, {preserveOrder: true});
-                                    break;
-                            }
-                        }
-                    }
-                });
-
-                // Initialize target filter
-                $scope.targetFilter = VS.init({
-                    container: $('#targetFilter'),
-                    query: '',
-                    showFacets: true,
-                    unquotable: [],
-                    callbacks: {
-                        search: function (query, searchCollection) {
-                            $scope.$apply(function () {
-                                $scope.updateTargetFilter(true);
-                            });
-                        },
-                        facetMatches: function (callback) {
-                            callback(['country', 'mmsi', 'name', 'type'], {preserveOrder: true});
-                        },
-                        valueMatches: function (facet, searchTerm, callback) {
-                            switch (facet) {
-                                case 'country':
-                                    callback(countryList, {preserveOrder: true});
-                                    break;
-                                case 'type':
-                                    callback(shipTypes, {preserveOrder: true});
-                                    break;
-                            }
-                        }
-                    }
-                });
-
                 $scope.params = AisQueryService.getSearchParams();
-                $scope.sourceFilter.searchBox.value($scope.params.sourceTxt || '');
-                $scope.targetFilter.searchBox.value($scope.params.targetTxt || '');
+
+                // The visual search fields reside in tabs, so, the dom is not ready it seems...
+                $timeout(function () {
+                    // Initialize source filter
+                    $scope.sourceFilter = VS.init({
+                        container: $('#sourceFilter'),
+                        query: '',
+                        showFacets: true,
+                        unquotable: [],
+                        callbacks: {
+                            search: function (query, searchCollection) {
+                                $scope.$apply(function () {
+                                    $scope.updateSourceFilter(true);
+                                });
+                            },
+                            facetMatches: function (callback) {
+                                callback(['type', 'bs', 'country', 'region'], {preserveOrder: true});
+                            },
+                            valueMatches: function (facet, searchTerm, callback) {
+                                switch (facet) {
+                                    case 'type':
+                                        callback(sourceTypes, {preserveOrder: true});
+                                        break;
+                                    case 'country':
+                                        callback(countryList, {preserveOrder: true});
+                                        break;
+                                }
+                            }
+                        }
+                    });
+
+                    // Initialize target filter
+                    $scope.targetFilter = VS.init({
+                        container: $('#targetFilter'),
+                        query: '',
+                        showFacets: true,
+                        unquotable: [],
+                        callbacks: {
+                            search: function (query, searchCollection) {
+                                $scope.$apply(function () {
+                                    $scope.updateTargetFilter(true);
+                                });
+                            },
+                            facetMatches: function (callback) {
+                                callback(['country', 'mmsi', 'name', 'type'], {preserveOrder: true});
+                            },
+                            valueMatches: function (facet, searchTerm, callback) {
+                                switch (facet) {
+                                    case 'country':
+                                        callback(countryList, {preserveOrder: true});
+                                        break;
+                                    case 'type':
+                                        callback(shipTypes, {preserveOrder: true});
+                                        break;
+                                }
+                            }
+                        }
+                    });
+
+                    $scope.sourceFilter.searchBox.value($scope.params.sourceTxt || '');
+                    $scope.targetFilter.searchBox.value($scope.params.targetTxt || '');
+                }, 100);
+
+            };
+
+
+            // ****************************************
+            // ** Advanced Filtering
+            // ****************************************
+
+            /**
+             * Called when the simple/advanced tabs are clicked
+             * @param useAdvancedFilter whether the simple or advanced tab is clicked
+             */
+            $scope.useAdvancedFilter = function (useAdvancedFilter) {
+                // The weird modelling of the filter type is due to this bug:
+                // https://github.com/angular-ui/bootstrap/issues/611
+                $scope.params.filterType.simple = !useAdvancedFilter;
+                $scope.params.filterType.advanced = useAdvancedFilter;
             };
 
             // ****************************************
@@ -262,31 +283,36 @@ angular.module('aisdownloader.app')
                 var url = 'interval=' + moment($scope.params.startDate).utc().format('YYYY-M-DTHH:mm:ss') + 'Z'
                     + '/' + moment($scope.params.endDate).utc().format('YYYY-M-DTHH:mm:ss') + 'Z';
 
-                var filter = '';
-                if ($scope.params.sourceBs.length > 0) {
-                    filter += ' & s.bs=' + encodeValues($scope.params.sourceBs).join();
-                }
-                if ($scope.params.sourceCountries.length > 0) {
-                    filter += ' & s.country=' + $scope.params.sourceCountries.join();
-                }
-                if ($scope.params.sourceRegions.length > 0) {
-                    filter += ' & s.region=' + encodeValues($scope.params.sourceRegions).join();
-                }
+                if ($scope.params.filterType.simple) {
+                    var filter = '';
+                    if ($scope.params.sourceBs.length > 0) {
+                        filter += ' & s.bs=' + encodeValues($scope.params.sourceBs).join();
+                    }
+                    if ($scope.params.sourceCountries.length > 0) {
+                        filter += ' & s.country=' + $scope.params.sourceCountries.join();
+                    }
+                    if ($scope.params.sourceRegions.length > 0) {
+                        filter += ' & s.region=' + encodeValues($scope.params.sourceRegions).join();
+                    }
 
-                if ($scope.params.targetCountries.length > 0) {
-                    filter += ' & t.country=' + $scope.params.targetCountries.join();
-                }
-                if ($scope.params.targetMmsi.length > 0) {
-                    filter += ' & t.mmsi=' + encodeValues($scope.params.targetMmsi).join();
-                }
-                if ($scope.params.targetNames.length > 0) {
-                    filter += ' & t.name=' + encodeValues($scope.params.targetNames).join();
-                }
-                if ($scope.params.targetTypes.length > 0) {
-                    filter += ' & t.type=' + $scope.params.targetTypes.join();
-                }
-                if (filter.length > 0) {
-                    url += '&filter=' + encodeURIComponent(filter.substring(3));
+                    if ($scope.params.targetCountries.length > 0) {
+                        filter += ' & t.country=' + $scope.params.targetCountries.join();
+                    }
+                    if ($scope.params.targetMmsi.length > 0) {
+                        filter += ' & t.mmsi=' + encodeValues($scope.params.targetMmsi).join();
+                    }
+                    if ($scope.params.targetNames.length > 0) {
+                        filter += ' & t.name=' + encodeValues($scope.params.targetNames).join();
+                    }
+                    if ($scope.params.targetTypes.length > 0) {
+                        filter += ' & t.type=' + $scope.params.targetTypes.join();
+                    }
+                    if (filter.length > 0) {
+                        url += '&filter=' + encodeURIComponent(filter.substring(3));
+                    }
+
+                } else if ($scope.params.filterType.advanced && $scope.params.advancedFilter) {
+                    url += '&filter=' + encodeURIComponent($scope.params.advancedFilter);
                 }
 
                 if ($scope.areaDefined()) {

@@ -36,24 +36,50 @@
         <div id="aisQuery" class="container" ng-controller="AisQueryCtrl" ng-init="init()">
 
 
-            <!-- Source filter -->
+            <!-- Filter -->
             <div class="row query-section">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1">
-                    <label tooltip="Define an AIS source filter">Source</label>
+                    <label tooltip="Define an AIS filter">Filter</label>
                 </div>
-                <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 input-group">
-                    <div id="sourceFilter" class="visual-search"></div>
-                </div>
-            </div>
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 input-group">
+                    <tabset>
 
+                        <tab heading="Simple"  select="useAdvancedFilter(false)" active="params.filterType.simple">
+                            <div class="filter-tab">
+                                <!-- Source filter -->
+                                <div class="row query-section">
+                                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
+                                        Source
+                                    </div>
+                                    <div class="col-xs-8 col-sm-9 col-md-10 col-lg-10 input-group">
+                                        <div id="sourceFilter" class="visual-search"></div>
+                                    </div>
+                                </div>
+                                <!-- Target filter -->
+                                <div class="row query-section">
+                                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
+                                        Target
+                                    </div>
+                                    <div class="col-xs-8 col-sm-9 col-md-10 col-lg-10 input-group">
+                                        <div id="targetFilter" class="visual-search"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
 
-            <!-- Target filter -->
-            <div class="row query-section">
-                <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1">
-                    <label tooltip="Define a vessel target filter">Target</label>
-                </div>
-                <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 input-group">
-                    <div id="targetFilter" class="visual-search"></div>
+                        <tab heading="Advanced"  select="useAdvancedFilter(true)" active="params.filterType.advanced">
+                            <div class="filter-tab">
+                                <div class="row query-section">
+                                    <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+                                        <textarea class="advanced-filter"  class="form-control"
+                                                  spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off"
+                                                  ng-model="params.advancedFilter" filter-validate>
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                    </tabset>
                 </div>
             </div>
 

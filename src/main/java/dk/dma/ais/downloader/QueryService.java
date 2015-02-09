@@ -15,6 +15,7 @@
  */
 package dk.dma.ais.downloader;
 
+import dk.dma.ais.packet.AisPacketFilters;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -332,6 +333,28 @@ public class QueryService {
         }
         return result;
     }
+
+    /**
+     * Validates the AIS filter passed along. The filter must adhere to the
+     * grammar defined by the AisLib:
+     * https://github.com/dma-ais/AisLib
+     * @param filter the filter to validate
+     * @return the the filter is valid or not
+     */
+    @RequestMapping( value = "/validate-filter", method= RequestMethod.GET)
+    @ResponseBody
+    public boolean validateFilter(@RequestParam("filter") String filter)  {
+
+        try {
+            AisPacketFilters.parseExpressionFilter(filter);
+            log.fine("Successfully parsed filter: " + filter);
+            return true;
+        } catch (Exception e) {
+            log.fine("Failed parsing filter: " + filter + ": " + e);
+            return false;
+        }
+    }
+
 
     /***************************************/
     /** Repo clean-up methods             **/

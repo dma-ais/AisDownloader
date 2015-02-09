@@ -21,17 +21,41 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
+        <ais.lib.version>2.2-SNAPSHOT</ais.lib.version>
+        <enav.version>0.5-SNAPSHOT</enav.version>
+        <guava.version>17.0</guava.version>
     </properties>
 
     <dependencies>
+
+        <!-- Spring Boot kickstarter -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency-->
+
+        <!-- Used for parsing AIS filters -->
+        <dependency>
+            <groupId>dk.dma.ais.lib</groupId>
+            <artifactId>ais-lib-communication</artifactId>
+            <version>${ais.lib.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>dk.dma.enav</groupId>
+            <artifactId>enav-model</artifactId>
+            <version>${enav.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>4.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>
