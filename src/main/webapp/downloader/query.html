@@ -39,7 +39,7 @@
             <!-- Filter -->
             <div class="row query-section">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1">
-                    <label tooltip="Define an AIS filter">Filter</label>
+                    <label tooltip="Define an AIS filter" tooltip-placement="bottom">Filter</label>
                 </div>
                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 input-group">
                     <tabset class="filter-tabs">
@@ -48,27 +48,21 @@
                             <div class="filter-tab">
                                 <!-- Source filter -->
                                 <div class="row query-section">
-                                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
-                                        Source
-                                    </div>
+                                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">Source</div>
                                     <div class="col-xs-8 col-sm-9 col-md-10 col-lg-10 input-group">
                                         <div id="sourceFilter" class="visual-search"></div>
                                     </div>
                                 </div>
                                 <!-- Target filter -->
                                 <div class="row query-section">
-                                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
-                                        Target
-                                    </div>
+                                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">Target</div>
                                     <div class="col-xs-8 col-sm-9 col-md-10 col-lg-10 input-group">
                                         <div id="targetFilter" class="visual-search"></div>
                                     </div>
                                 </div>
                                 <!-- Message filter -->
                                 <div class="row query-section">
-                                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
-                                        Message
-                                    </div>
+                                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">Message</div>
                                     <div class="col-xs-8 col-sm-9 col-md-10 col-lg-10 input-group">
                                         <div id="messageFilter" class="visual-search"></div>
                                     </div>
@@ -99,7 +93,7 @@
             <!-- Time selection -->
             <div class="row query-section">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1" style="margin-top: 5px;">
-                    <label tooltip="Define the time interval">Time</label>
+                    <label tooltip="Define the time interval" tooltip-placement="bottom">Time</label>
                 </div>
                 <div class="col-xs-8 col-sm-5 col-md-4 col-lg-3" style="padding-top: 8px; margin-left: -14px;">
                     <input type="text" class="form-control"
@@ -115,7 +109,7 @@
             <!-- Area filter -->
             <div class="row query-section">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1">
-                    <label tooltip="Define the AIS area">Area</label>
+                    <label tooltip="Define the AIS area" tooltip-placement="bottom">Area</label>
                 </div>
                 <div class="col-xs-8 col-sm-10 col-md-11 col-lg-11 input-group">
                     <input latitude type="text" class="form-control input-sm area-pos"  style="width: 100px;" ng-model="params.area.minLat"  placeholder="LL Lat">
@@ -140,9 +134,9 @@
 
 
             <!-- Output format -->
-            <div class="row query-section">
+            <div class="row query-section" style="margin-top: 15px">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1">
-                    <label tooltip="Specify the output format">Output</label>
+                    <label tooltip="Specify the output format" tooltip-placement="bottom">Output</label>
                 </div>
                 <div class="col-xs-8 col-sm-10 col-md-11 col-lg-11 input-group">
                     <div class="btn-group">
@@ -191,23 +185,44 @@
             </div>
 
 
-            <!-- Limit -->
-            <div class="row query-section">
+            <!-- Sampling -->
+            <div class="row query-section" style="margin-top: 15px">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1">
-                    <label tooltip="Limit the number of AIS records">Limit</label>
+                    <label tooltip="Downsample the number of AIS records" tooltip-placement="bottom">Sampling</label>
                 </div>
                 <div class="col-xs-8 col-sm-10 col-md-11 col-lg-11 input-group form-group">
-                    <input type="number" class="form-control input-sm"  style="width: 100px;" ng-model="params.limit">
-                    <button type="button" class="btn btn-default btn-sm"  min="0" style="margin-left: 5px" ng-click="params.limit = undefined;">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </button>
+                    <div class="form-group row">
+                        <div class="col-sm-8 col-md-4 col-lg-3">
+                            <div class="input-group">
+                                <span class="input-group-addon">limit</span>
+                                <input type="number" class="form-control input-sm"  ng-model="params.limit">
+                                <span class="input-group-addon glyphicon glyphicon-trash trash-btn" ng-click="params.limit = undefined;"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-8 col-md-4 col-lg-3">
+                            <div class="input-group">
+                                <span class="input-group-addon">min. dist (m)</span>
+                                <input type="number" class="form-control input-sm"  ng-model="params.minDistance" disabled>
+                                <span class="input-group-addon glyphicon glyphicon-trash trash-btn" ng-click="params.minDistance = undefined;"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-8 col-md-4 col-lg-3">
+                            <div class="input-group">
+                                <span class="input-group-addon">min. duration (s)</span>
+                                <input type="number" class="form-control input-sm"  ng-model="params.minDuration" disabled>
+                                <span class="input-group-addon glyphicon glyphicon-trash trash-btn" ng-click="params.minDuration = undefined;"></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
 
             <!-- Download Buttons -->
             <div class="row query-section">
-                <div class="col-xs-offset-4 col-sm-offset-2 col-md-offset-1 col-lg-offset-1 col-xs-8 col-sm-8 col-md-6 col-lg-6 input-group">
+                <div class="col-xs-offset-4 col-sm-offset-2 col-md-offset-1 col-lg-offset-1 col-xs-8 col-sm-10 col-md-11 col-lg-11 input-group">
                     <button type="button" class="btn btn-primary" ng-click="download()" ng-disabled="downloadDisabled">
                         <span class="glyphicon glyphicon-download-alt"></span> Schedule Download
                     </button>&nbsp;

@@ -457,6 +457,12 @@ angular.module('aisdownloader.app')
                 if ($scope.params.limit) {
                     url += '&limit=' + $scope.params.limit;
                 }
+                if ($scope.params.minDistance) {
+                    url += '&minDistance=' + $scope.params.minDistance;
+                }
+                if ($scope.params.minDuration) {
+                    url += '&minDuration=P0Y0M0DT0H0M' + $scope.params.minDuration + 'S'; // NB: ISOPeriodFormat
+                }
 
                 $scope.downloadUrl = url;
             };

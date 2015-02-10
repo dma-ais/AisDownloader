@@ -106,7 +106,9 @@ angular.module('aisdownloader.app')
                     outputTableSeparator : ';',
                     outputTableHeader: true,
 
-                    limit: undefined
+                    limit: undefined,
+                    minDistance: undefined,
+                    minDuration: undefined
                 }
             },
 

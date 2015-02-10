@@ -197,3 +197,7 @@ textarea:focus,textarea:active {
     color: gray;
     font-size: 10px;
 }
+
+.trash-btn {
+    top: 0!important;
+}
