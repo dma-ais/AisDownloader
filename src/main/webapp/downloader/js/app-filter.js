@@ -4,6 +4,9 @@
  */
 angular.module('aisdownloader.app')
 
+    /**
+     * Formats a file size as a typed value in bytes, kB, MB, etc.
+     */
     .filter('bytes', function() {
         return function(bytes, precision) {
             if (bytes == 0) return '0 bytes';

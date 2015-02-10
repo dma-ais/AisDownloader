@@ -3,6 +3,9 @@
  */
 angular.module('aisdownloader.app')
 
+    /**
+     * Directive for handling the date-time picker
+     */
     .directive('psDatetimePicker', [ '$rootScope', function($rootScope) {
         var format = 'DD-MM-YYYY HH:mm';
 
@@ -42,6 +45,10 @@ angular.module('aisdownloader.app')
         };
     }])
 
+
+    /**
+     * Directive used for validating the value of an input field as a filter
+     */
     .directive('filterValidate', ['$timeout', 'AisQueryService', function ($timeout, AisQueryService)  {
         return {
             // restrict to an attribute type.
@@ -54,11 +61,15 @@ angular.module('aisdownloader.app')
 
                 var promise = undefined;
 
+                // Async schedule a call to the back-end to validate the filter
                 function validateAsync(value) {
+                    // If a back-end validation has already been scheduled, cancel it
                     if (promise) {
                         $timeout.cancel(promise);
                         promise = undefined;
                     }
+
+                    // Schedule the back-end validation in 500 ms time
                     promise = $timeout(function () {
                         AisQueryService.validateFilter(value,
                             function (valid) {
@@ -73,6 +84,13 @@ angular.module('aisdownloader.app')
                 }
 
                 ctrl.$parsers.unshift(function (value) {
+                    // Special case - empty filters are valid
+                    if (!value) {
+                        ctrl.$setValidity('filterValidate', true);
+                        return value;
+                    }
+
+                    // Validate the filter
                     validateAsync(value);
                     return value;
                 });
@@ -80,6 +98,10 @@ angular.module('aisdownloader.app')
         };
     }])
 
+
+    /**
+     * Defines a map that can be used to display and draw an area bbox
+     */
     .directive('aisMap', ['$rootScope', function ($rootScope) {
         'use strict';
 
@@ -232,15 +254,25 @@ angular.module('aisdownloader.app')
     }])
 
 
+    /**
+     * Formats the value of an input field as a latitude value
+     */
     .directive('latitude', function() {
         return positionDirective('latitude', formatLatitude, parseLatitude);
     })
 
+
+    /**
+     * Formats the value of an input field as a longitude value
+     */
     .directive('longitude', function() {
         return positionDirective('longitude', formatLongitude, parseLongitude);
     });
 
 
+/**
+ * The actual latitude/longitude directive function
+ */
 function positionDirective(directive, formatter1, parser) {
     function formatter(value) {
         if (value || value === 0) return formatter1(value);

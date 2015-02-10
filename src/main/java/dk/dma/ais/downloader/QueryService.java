@@ -55,11 +55,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A repository service.<br>
- * Streams files from the repository.
+ * A Query service.<br>
+ * Used for issuing am AIS store query. The query result will be downloaded
+ * and stored in a client specific folder.
  * <p>
- *     The repository is public in as much as everybody can download all files.<br>
- * </p>
+ * Also handles streaming, listing and deleting files from the client specific
+ * download folder.
  */
 @Controller
 @RequestMapping("/downloader/query")

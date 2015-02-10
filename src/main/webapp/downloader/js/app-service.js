@@ -13,12 +13,19 @@ angular.module('aisdownloader.app')
 
         return {
 
+            /**
+             * Resets the users' current parameters and client id
+             */
             reset : function () {
                 storage.clear();
                 $window.location.reload();
             },
 
 
+            /**
+             * Returns the client id stored in the local storage.
+             * If this does not exists, returns a new unique client id and stores it in the browser local storage
+             */
             clientId : function () {
                 var clientId = storage.clientId;
                 if (!clientId) {
@@ -29,6 +36,10 @@ angular.module('aisdownloader.app')
                 return clientId;
             },
 
+
+            /**
+             * Gets existing parameters from the users local storage, or a new parameters entity
+             */
             getSearchParams: function() {
                 var params;
                 try { params = JSON.parse(storage.params); } catch (e) {}
@@ -38,6 +49,10 @@ angular.module('aisdownloader.app')
                 return params;
             },
 
+
+            /**
+             * Creates a new empty parameters entity with default values
+             */
             clearParams: function () {
                 return {
                     // Parametet version
@@ -82,28 +97,47 @@ angular.module('aisdownloader.app')
                 }
             },
 
+
+            /**
+             * Saves the parameters in the local storage
+             */
             saveSearchParams: function (params) {
                 try { storage.params = JSON.stringify(params); } catch (e) {}
             },
 
+
+            /**
+             * Schedules a query via the backend
+             */
             execute: function(params, success, error) {
                 $http.get('/downloader/query/execute/' + this.clientId() + '?params=' + encodeURIComponent(params))
                     .success(success)
                     .error(error);
             },
 
+
+            /**
+             * Deletes the given file in the client-specific download repository
+             */
             deleteFile: function(file, success, error) {
                 $http.get('/downloader/query/delete/' + file)
                     .success(success)
                     .error(error);
             },
 
+            /**
+             * Lists all files in the client-specific download repository
+             */
             listFiles: function(success, error) {
                 $http.get('/downloader/query/list/' + this.clientId())
                     .success(success)
                     .error(error);
             },
 
+
+            /**
+             * Validates the AIS filter against the backend
+             */
             validateFilter: function(filter, success, error) {
                 $http.get('/downloader/query/validate-filter?filter=' + encodeURIComponent(filter))
                     .success(success)
