@@ -61,7 +61,7 @@ angular.module('aisdownloader.app')
                                 });
                             },
                             facetMatches: function (callback) {
-                                callback(['country', 'mmsi', 'name', 'type'], {preserveOrder: true});
+                                callback(['country', 'imo', 'callsign', 'navstat', 'name', 'type'], {preserveOrder: true});
                             },
                             valueMatches: function (facet, searchTerm, callback) {
                                 switch (facet) {
@@ -71,6 +71,40 @@ angular.module('aisdownloader.app')
                                     case 'type':
                                         callback(shipTypes, {preserveOrder: true});
                                         break;
+                                    case 'navstat':
+                                        callback(navstatValues, {preserveOrder: true});
+                                        break;
+                                }
+                            }
+                        }
+                    });
+
+                    // Initialize message filter
+                    $scope.messageFilter = VS.init({
+                        container: $('#messageFilter'),
+                        query: '',
+                        showFacets: true,
+                        unquotable: [],
+                        callbacks: {
+                            search: function (query, searchCollection) {
+                                $scope.$apply(function () {
+                                    $scope.updateMessageFilter(true);
+                                });
+                            },
+                            facetMatches: function (callback) {
+                                callback(['country', 'mmsi', 'imo', 'callsign', 'navstat', 'name', 'type'], {preserveOrder: true});
+                            },
+                            valueMatches: function (facet, searchTerm, callback) {
+                                switch (facet) {
+                                    case 'country':
+                                        callback(countryList, {preserveOrder: true});
+                                        break;
+                                    case 'type':
+                                        callback(shipTypes, {preserveOrder: true});
+                                        break;
+                                    case 'navstat':
+                                        callback(navstatValues, {preserveOrder: true});
+                                        break;
                                 }
                             }
                         }
@@ -78,6 +112,7 @@ angular.module('aisdownloader.app')
 
                     $scope.sourceFilter.searchBox.value($scope.params.sourceTxt || '');
                     $scope.targetFilter.searchBox.value($scope.params.targetTxt || '');
+                    $scope.messageFilter.searchBox.value($scope.params.messageTxt || '');
                 }, 100);
 
             };
@@ -108,6 +143,7 @@ angular.module('aisdownloader.app')
             $scope.updateSourceFilter = function (updateDownloadUrl) {
                 // Reset filter params
                 $scope.params.sourceTxt = $scope.sourceFilter.searchBox.value();
+                $scope.params.sourceType = '';
                 $scope.params.sourceBs = [];
                 $scope.params.sourceCountries = [];
                 $scope.params.sourceRegions = [];
@@ -116,7 +152,7 @@ angular.module('aisdownloader.app')
                 for (var f in facets) {
                     var facet = facets[f];
                     if (facet.type) {
-                        // TODO
+                        $scope.params.sourceType = facet.type;
                     } else if (facet.bs) {
                         $scope.params.sourceBs.push(facet.bs);
                     } else if (facet.country) {
@@ -131,18 +167,20 @@ angular.module('aisdownloader.app')
                 }
             };
 
-            /**
-             * Called when the target filter has been updated
-             */
             // ****************************************
             // ** Target Filtering
             // ****************************************
 
+            /**
+             * Called when the target filter has been updated
+             */
             $scope.updateTargetFilter = function (updateDownloadUrl) {
                 // Reset filter params
                 $scope.params.targetTxt = $scope.targetFilter.searchBox.value();
                 $scope.params.targetCountries = [];
-                $scope.params.targetMmsi = [];
+                $scope.params.targetImos = [];
+                $scope.params.targetCallsigns = [];
+                $scope.params.targetNavstats = [];
                 $scope.params.targetNames = [];
                 $scope.params.targetTypes = [];
 
@@ -151,12 +189,59 @@ angular.module('aisdownloader.app')
                     var facet = facets[f];
                     if (facet.country) {
                         $scope.params.targetCountries.push(facet.country);
-                    } else if (facet.mmsi) {
-                        $scope.params.targetMmsi.push(facet.mmsi);
+                    } else if (facet.imo) {
+                        $scope.params.targetImos.push(facet.imo);
+                    } else if (facet.callsign) {
+                        $scope.params.targetCallsigns.push(facet.callsign);
+                    } else if (facet.navstat) {
+                        $scope.params.targetNavstats.push(facet.navstat);
                     } else if (facet.name) {
                         $scope.params.targetNames.push(facet.name);
                     } else if (facet.type) {
                         $scope.params.targetTypes.push(facet.type);
+                    }
+                }
+
+                if (updateDownloadUrl) {
+                    $scope.updateDownloadUrl();
+                }
+            };
+
+            // ****************************************
+            // ** Message Filtering
+            // ****************************************
+
+            /**
+             * Called when the message filter has been updated
+             */
+            $scope.updateMessageFilter = function (updateDownloadUrl) {
+                // Reset filter params
+                $scope.params.messageTxt = $scope.messageFilter.searchBox.value();
+                $scope.params.messageCountries = [];
+                $scope.params.messageMmsi = [];
+                $scope.params.messageImos = [];
+                $scope.params.messageCallsigns = [];
+                $scope.params.messageNavstats = [];
+                $scope.params.messageNames = [];
+                $scope.params.messageTypes = [];
+
+                var facets = $scope.messageFilter.searchQuery.facets();
+                for (var f in facets) {
+                    var facet = facets[f];
+                    if (facet.country) {
+                        $scope.params.messageCountries.push(facet.country);
+                    } else if (facet.mmsi) {
+                        $scope.params.messageMmsi.push(facet.mmsi);
+                    } else if (facet.imo) {
+                        $scope.params.messageImos.push(facet.imo);
+                    } else if (facet.callsign) {
+                        $scope.params.messageCallsigns.push(facet.callsign);
+                    } else if (facet.navstat) {
+                        $scope.params.messageNavstats.push(facet.navstat);
+                    } else if (facet.name) {
+                        $scope.params.messageNames.push(facet.name);
+                    } else if (facet.type) {
+                        $scope.params.messageTypes.push(facet.type);
                     }
                 }
 
@@ -283,8 +368,14 @@ angular.module('aisdownloader.app')
                 var url = 'interval=' + moment($scope.params.startDate).utc().format('YYYY-M-DTHH:mm:ss') + 'Z'
                     + '/' + moment($scope.params.endDate).utc().format('YYYY-M-DTHH:mm:ss') + 'Z';
 
+                // Simple filtering
                 if ($scope.params.filterType.simple) {
                     var filter = '';
+
+                    // Source filter
+                    if ($scope.params.sourceType == 'SAT' || $scope.params.sourceType == 'LIVE') {
+                        filter += ' & s.type=' +$scope.params.sourceType;
+                    }
                     if ($scope.params.sourceBs.length > 0) {
                         filter += ' & s.bs=' + encodeValues($scope.params.sourceBs).join();
                     }
@@ -295,18 +386,49 @@ angular.module('aisdownloader.app')
                         filter += ' & s.region=' + encodeValues($scope.params.sourceRegions).join();
                     }
 
+                    // Target filter
                     if ($scope.params.targetCountries.length > 0) {
                         filter += ' & t.country=' + $scope.params.targetCountries.join();
                     }
-                    if ($scope.params.targetMmsi.length > 0) {
-                        filter += ' & t.mmsi=' + encodeValues($scope.params.targetMmsi).join();
+                    if ($scope.params.targetImos.length > 0) {
+                        filter += ' & t.imo=' + encodeValues($scope.params.targetImos).join();
                     }
                     if ($scope.params.targetNames.length > 0) {
                         filter += ' & t.name=' + encodeValues($scope.params.targetNames).join();
                     }
+                    if ($scope.params.targetCallsigns.length > 0) {
+                        filter += ' & t.cs=' + encodeValues($scope.params.targetCallsigns).join();
+                    }
                     if ($scope.params.targetTypes.length > 0) {
                         filter += ' & t.type=' + $scope.params.targetTypes.join();
                     }
+                    if ($scope.params.targetNavstats.length > 0) {
+                        filter += ' & t.navstat=' + encodeValues($scope.params.targetNavstats).join();
+                    }
+
+                    // Message filter
+                    if ($scope.params.messageCountries.length > 0) {
+                        filter += ' & m.country=' + $scope.params.messageCountries.join();
+                    }
+                    if ($scope.params.messageMmsi.length > 0) {
+                        filter += ' & m.mmsi=' + encodeValues($scope.params.messageMmsi).join();
+                    }
+                    if ($scope.params.messageImos.length > 0) {
+                        filter += ' & m.imo=' + encodeValues($scope.params.messageImos).join();
+                    }
+                    if ($scope.params.messageNames.length > 0) {
+                        filter += ' & m.name=' + encodeValues($scope.params.messageNames).join();
+                    }
+                    if ($scope.params.messageCallsigns.length > 0) {
+                        filter += ' & m.cs=' + encodeValues($scope.params.messageCallsigns).join();
+                    }
+                    if ($scope.params.messageTypes.length > 0) {
+                        filter += ' & m.type=' + $scope.params.messageTypes.join();
+                    }
+                    if ($scope.params.messageNavstats.length > 0) {
+                        filter += ' & m.navstat=' + encodeValues($scope.params.messageNavstats).join();
+                    }
+
                     if (filter.length > 0) {
                         url += '&filter=' + encodeURIComponent(filter.substring(3));
                     }
@@ -347,6 +469,7 @@ angular.module('aisdownloader.app')
             $scope.download = function () {
                 $scope.updateSourceFilter(false);
                 $scope.updateTargetFilter(false);
+                $scope.updateMessageFilter(false);
                 $scope.updateDownloadUrl();
                 $scope.downloadDisabled = true;
 
@@ -370,6 +493,7 @@ angular.module('aisdownloader.app')
                 $scope.params = AisQueryService.clearParams();
                 $scope.sourceFilter.searchBox.value($scope.params.sourceTxt || '');
                 $scope.targetFilter.searchBox.value($scope.params.targetTxt || '');
+                $scope.messageFilter.searchBox.value($scope.params.messageTxt || '');
             };
 
             $scope.reset = function () {
@@ -382,6 +506,7 @@ angular.module('aisdownloader.app')
             $scope.copy = function () {
                 $scope.updateSourceFilter(false);
                 $scope.updateTargetFilter(false);
+                $scope.updateMessageFilter(false);
                 $scope.updateDownloadUrl();
                 window.prompt("Copy to clipboard:",
                     'https://ais2.e-navigation.net/aisview/rest/store/query?' + $scope.downloadUrl);

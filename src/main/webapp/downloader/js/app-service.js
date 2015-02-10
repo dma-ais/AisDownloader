@@ -60,6 +60,7 @@ angular.module('aisdownloader.app')
 
                     // Source Filter
                     sourceTxt: '', // Contains the visual search text
+                    sourceType : '',
                     sourceBs : [],
                     sourceCountries : [],
                     sourceRegions : [],
@@ -67,9 +68,21 @@ angular.module('aisdownloader.app')
                     // Target Filter
                     targetTxt: '', // Contains the visual search text
                     targetCountries : [],
-                    targetMmsi : [],
+                    targetImos : [],
                     targetNames : [],
+                    targetCallsigns : [],
                     targetTypes : [],
+                    targetNavstats : [],
+
+                    // Message Filter
+                    messageTxt: '', // Contains the visual search text
+                    messageCountries : [],
+                    messageMmsi : [],
+                    messageImos : [],
+                    messageNames : [],
+                    messageCallsigns : [],
+                    messageTypes : [],
+                    messageNavstats : [],
 
                     // Advanced filter
                     advancedFilter: '',

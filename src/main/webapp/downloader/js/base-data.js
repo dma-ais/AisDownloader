@@ -27,8 +27,22 @@ var shipTypes = [
 
 sourceTypes = [
 	{label:'Any',        value: 'any'},
-	{label:'Live',       value: 'live'},
-	{label:'Sat',        value: 'sat'}
+	{label:'Live',       value: 'LIVE'},
+	{label:'Sat',        value: 'SAT'}
+];
+
+navstatValues = [
+    {label:'Under way using engine',    value: 'UNDER_WAY_USING_ENGINE'},
+    {label:'At anchor',                 value: 'AT_ANCHOR'},
+    {label:'Not under command',         value: 'NOT_UNDER_COMMAND'},
+    {label:'Restricted manoeuvrability',value: 'RESTRICTED_MANOEUVRABILITY'},
+    {label:'Constrained by draught',    value: 'CONSTRAINED_BY_HER_DRAUGHT'},
+    {label:'Moored',                    value: 'MOORED'},
+    {label:'Aground',                   value: 'AGROUND'},
+    {label:'Engaged in fishing',        value: 'ENGAGED_IN_FISHING'},
+    {label:'Under way',                 value: 'UNDER_WAY'},
+    {label:'Undefined',                 value: 'UNDEFINED'},
+    {label:'AIS-SART',                  value: 'AIS_SART'}
 ];
 
 countryList = [
