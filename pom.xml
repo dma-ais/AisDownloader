@@ -41,6 +41,11 @@
             <version>${ais.lib.version}</version>
         </dependency>
         <dependency>
+            <groupId>dk.dma.ais.lib</groupId>
+            <artifactId>ais-lib-messages</artifactId>
+            <version>${ais.lib.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
