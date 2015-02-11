@@ -375,6 +375,12 @@ public class QueryService {
     @ResponseBody
     public boolean validateFilter(@RequestParam("filter") String filter)  {
 
+        // A blank filter is valid
+        if (StringUtils.isEmpty(filter)) {
+            return true;
+        }
+
+        // Check if the filter can be parsed
         try {
             AisPacketFilters.parseExpressionFilter(filter);
             log.fine("Successfully parsed filter: " + filter);

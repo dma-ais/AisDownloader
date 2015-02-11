@@ -84,12 +84,6 @@ angular.module('aisdownloader.app')
                 }
 
                 ctrl.$parsers.unshift(function (value) {
-                    // Special case - empty filters are valid
-                    if (!value) {
-                        ctrl.$setValidity('filterValidate', true);
-                        return value;
-                    }
-
                     // Validate the filter
                     validateAsync(value);
                     return value;
