@@ -177,7 +177,7 @@ public class QueryService {
                 // Set up a few timeouts and fetch the attachment
                 URLConnection con = new URL(url).openConnection();
                 con.setConnectTimeout(60 * 1000);       // 1 minute
-                con.setReadTimeout(10 * 60 * 1000);     // 10 minutes
+                con.setReadTimeout(1 * 60 * 60 * 1000); // 1 hour
 
                 if (!StringUtils.isEmpty(authHeader)) {
                     con.setRequestProperty ("Authorization", authHeader);
