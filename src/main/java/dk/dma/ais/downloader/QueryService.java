@@ -47,6 +47,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -361,6 +362,7 @@ public class QueryService {
                 });
             }
         }
+        Collections.sort(result);
         return result;
     }
 

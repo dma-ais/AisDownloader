@@ -88,6 +88,9 @@ angular.module('aisdownloader.app')
                     advancedFilter: '',
                     filterType: { simple: true, advanced: false },
 
+                    // MMSI
+                    mmsi: undefined,
+
                     // Time Selection
                     startDate : moment().startOf('hour').valueOf(),
                     endDate : moment().startOf('hour').add(10, 'minutes').valueOf(),

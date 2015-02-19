@@ -437,6 +437,10 @@ angular.module('aisdownloader.app')
                     url += '&filter=' + encodeURIComponent($scope.params.advancedFilter);
                 }
 
+                if ($scope.params.mmsi) {
+                    url += '&mmsi=' + $scope.params.mmsi;
+                }
+
                 if ($scope.areaDefined()) {
                     var a = $scope.params.area;
                     url += '&box=' + a.maxLat.toFixed(3) + ',' + a.minLon.toFixed(3) + ','

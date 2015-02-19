@@ -90,6 +90,20 @@
             </div>
 
 
+            <!-- MMSI selection -->
+            <div class="row query-section">
+                <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1" style="margin-top: 5px;">
+                    <label tooltip="Define the time interval" tooltip-placement="bottom">MMSI</label>
+                </div>
+                <div class="col-xs-8 col-sm-5 col-md-4 col-lg-3" style="padding-top: 8px; margin-left: -14px;">
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="params.mmsi">
+                        <span class="input-group-addon glyphicon glyphicon-trash trash-btn" ng-click="params.mmsi = undefined;"></span>
+                    </div>
+                </div>
+            </div>
+
+
             <!-- Time selection -->
             <div class="row query-section">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1" style="margin-top: 5px;">

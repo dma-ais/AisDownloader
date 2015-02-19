@@ -20,7 +20,7 @@ import java.util.Date;
 /**
  * Represents a file in the repository
  */
-public class RepoFile {
+public class RepoFile implements Comparable<RepoFile> {
 
     String name;
     String path;
@@ -66,5 +66,17 @@ public class RepoFile {
 
     public void setComplete(boolean complete) {
         this.complete = complete;
+    }
+
+    @Override
+    public int compareTo(RepoFile o) {
+        if (updated == null && o.updated == null) {
+            return 0;
+        } else if (updated == null) {
+            return -1;
+        } else if (o.updated == null) {
+            return 1;
+        }
+        return updated.compareTo(o.updated);
     }
 }
