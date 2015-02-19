@@ -111,7 +111,8 @@ angular.module('aisdownloader.app')
 
                     limit: undefined,
                     minDistance: undefined,
-                    minDuration: undefined
+                    minDuration: undefined,
+                    duplicateWindow: undefined
                 }
             },
 

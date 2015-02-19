@@ -467,6 +467,9 @@ angular.module('aisdownloader.app')
                 if ($scope.params.minDuration) {
                     url += '&minDuration=P0Y0M0DT0H0M' + $scope.params.minDuration + 'S'; // NB: ISOPeriodFormat
                 }
+                if ($scope.params.duplicateWindow) {
+                    url += '&duplicateWindow=' + $scope.params.duplicateWindow;
+                }
 
                 $scope.downloadUrl = url;
             };

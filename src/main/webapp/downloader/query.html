@@ -208,12 +208,22 @@
                     <div class="form-group row">
                         <div class="col-sm-8 col-md-4 col-lg-3">
                             <div class="input-group">
-                                <span class="input-group-addon">limit</span>
+                                <span class="input-group-addon">limit records</span>
                                 <input type="number" class="form-control input-sm"  ng-model="params.limit">
                                 <span class="input-group-addon glyphicon glyphicon-trash trash-btn" ng-click="params.limit = undefined;"></span>
                             </div>
                         </div>
 
+                        <div class="col-sm-8 col-md-4 col-lg-3">
+                            <div class="input-group">
+                                <span class="input-group-addon">duplicates (s)</span>
+                                <input type="number" class="form-control input-sm"  ng-model="params.duplicateWindow" >
+                                <span class="input-group-addon glyphicon glyphicon-trash trash-btn" ng-click="params.duplicateWindow = undefined;"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <div class="col-sm-8 col-md-4 col-lg-3">
                             <div class="input-group">
                                 <span class="input-group-addon">min. dist (m)</span>
