@@ -248,16 +248,19 @@
             <div class="row query-section">
                 <div class="col-xs-offset-4 col-sm-offset-2 col-md-offset-1 col-lg-offset-1 col-xs-8 col-sm-10 col-md-11 col-lg-11 input-group">
                     <button type="button" class="btn btn-primary" ng-click="download()" ng-disabled="downloadDisabled">
-                        <span class="glyphicon glyphicon-download-alt"></span> Schedule Download
+                        <span class="glyphicon glyphicon-download-alt"></span> Schedule
+                    </button>&nbsp;
+                    <button type="button" class="btn btn-default" ng-click="open()" ng-disabled="downloadDisabled">
+                        <span class="glyphicon glyphicon-download"></span> Open
+                    </button>&nbsp;
+                    <button type="button" class="btn btn-default" ng-click="copy()" ng-disabled="downloadDisabled">
+                        <span class="glyphicon glyphicon-copy"></span> Copy URL
                     </button>&nbsp;
                     <button type="button" class="btn btn-default" ng-click="clear()">
                         <span class="glyphicon glyphicon-remove-sign"></span> Clear Params
                     </button>&nbsp;
                     <button type="button" class="btn btn-default" ng-click="reset()">
                         <span class="glyphicon glyphicon-trash"></span> Reset
-                    </button>&nbsp;
-                    <button type="button" class="btn btn-default" ng-click="copy()">
-                        <span class="glyphicon glyphicon-copy"></span> Copy URL
                     </button>&nbsp;
                 </div>
             </div>

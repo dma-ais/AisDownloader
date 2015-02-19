@@ -514,7 +514,19 @@ angular.module('aisdownloader.app')
             };
 
             /**
-             * Main search method
+             * Open dialog with URL
+             */
+            $scope.open = function () {
+                $scope.updateSourceFilter(false);
+                $scope.updateTargetFilter(false);
+                $scope.updateMessageFilter(false);
+                $scope.updateDownloadUrl();
+                var url = 'https://ais2.e-navigation.net/aisview/rest/store/query?' + $scope.downloadUrl;
+                window.open(url);
+            };
+
+            /**
+             * Open dialog with URL
              */
             $scope.copy = function () {
                 $scope.updateSourceFilter(false);
