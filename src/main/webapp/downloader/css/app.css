@@ -178,7 +178,7 @@ textarea:focus,textarea:active {
 
 .result-files {
     width: 380px;
-    padding: 10px;
+    padding: 10px 10px 0 10px;
 }
 
 .result-file {
@@ -200,4 +200,12 @@ textarea:focus,textarea:active {
 
 .trash-btn {
     top: 0!important;
+}
+
+.delete-files {
+    font-size: 11px;
+    text-align: center;
+    padding: 5px 0 5px 0;
+    margin-top: 5px;
+    border-top: 1px solid lightgray;
 }

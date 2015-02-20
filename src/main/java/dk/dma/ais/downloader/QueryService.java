@@ -178,7 +178,7 @@ public class QueryService {
                 // Set up a few timeouts and fetch the attachment
                 URLConnection con = new URL(url).openConnection();
                 con.setConnectTimeout(60 * 1000);       // 1 minute
-                con.setReadTimeout(1 * 60 * 60 * 1000); // 1 hour
+                con.setReadTimeout(60 * 60 * 1000);     // 1 hour
 
                 if (!StringUtils.isEmpty(authHeader)) {
                     con.setRequestProperty ("Authorization", authHeader);
@@ -305,7 +305,7 @@ public class QueryService {
     }
 
     /**
-     * Streams the file specified by the path
+     * Deletes the file specified by the path
      */
     @RequestMapping( value = "/delete/{clientId}/{file:.*}", method= RequestMethod.GET)
     @ResponseBody
@@ -329,6 +329,40 @@ public class QueryService {
     }
 
     /**
+     * Deletes all the file of the client folder
+     */
+    @RequestMapping( value = "/delete-all/{clientId}", method= RequestMethod.GET)
+    @ResponseBody
+    public String deleteFiles(@PathVariable("clientId") String clientId,
+                              HttpServletResponse response) throws IOException {
+
+        int deletedFiles = 0;
+        Path path = repoRoot
+                .resolve(clientId);
+
+        if (Files.notExists(path) || !Files.isDirectory(path)) {
+            log.log(Level.WARNING, "Failed deleting files in " + path);
+            response.setStatus(404);
+            return "Failed deleting files in " + clientId;
+        }
+
+        try {
+            Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    log.info("Deleting repo file      :" + file);
+                    Files.delete(file);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "Failed cleaning up dir: " + path);
+            return "Failed deleting files in " + clientId;
+        }
+        return "Deleted files in dir " + clientId;
+    }
+
+    /**
      * Returns a list of files in the folder specified by the clientId
      * @return the list of files in the folder specified by the path
      */
@@ -341,7 +375,7 @@ public class QueryService {
 
         if (Files.exists(folder) && Files.isDirectory(folder)) {
 
-            // Filter out directories, hidden files, thumbnails and map images
+            // Filter out directories and hidden files
             DirectoryStream.Filter<Path> filter = file ->
                     Files.isRegularFile(file) &&
                             !file.getFileName().toString().startsWith(".");

@@ -145,6 +145,15 @@ angular.module('aisdownloader.app')
             },
 
             /**
+             * Deletes the files in the client-specific download repository
+             */
+            deleteFiles: function(success, error) {
+                $http.get('/downloader/query/delete-all/' + this.clientId())
+                    .success(success)
+                    .error(error);
+            },
+
+            /**
              * Lists all files in the client-specific download repository
              */
             listFiles: function(success, error) {

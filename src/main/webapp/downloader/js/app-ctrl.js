@@ -593,6 +593,15 @@ angular.module('aisdownloader.app')
                     file.path,
                     function (result) { $scope.updateFiles(); },
                     function () { $scope.updateFiles(); });
+            };
+
+            /**
+             * Deletes all files
+             */
+            $scope.deleteFiles = function () {
+                AisQueryService.deleteFiles(
+                    function (result) { $scope.updateFiles(); },
+                    function () { $scope.updateFiles(); });
             }
 
-    }]);
+        }]);
