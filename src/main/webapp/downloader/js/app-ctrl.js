@@ -438,7 +438,12 @@ angular.module('aisdownloader.app')
                 }
 
                 if ($scope.params.mmsi) {
-                    url += '&mmsi=' + $scope.params.mmsi;
+                    var mmsi = $scope.params.mmsi.replace(/,/g, ' ').split(" ");
+                    for (var m in mmsi) {
+                        if (mmsi[m]) {
+                            url += '&mmsi=' + mmsi[m].trim();
+                        }
+                    }
                 }
 
                 if ($scope.areaDefined()) {

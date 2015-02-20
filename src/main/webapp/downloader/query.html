@@ -93,7 +93,7 @@
             <!-- MMSI selection -->
             <div class="row query-section">
                 <div class="col-xs-4 col-sm-2 col-md-1 col-lg-1" style="margin-top: 5px;">
-                    <label tooltip="Define the time interval" tooltip-placement="bottom">MMSI</label>
+                    <label tooltip="Define the list of MMSI to include" tooltip-placement="bottom">MMSI</label>
                 </div>
                 <div class="col-xs-8 col-sm-5 col-md-4 col-lg-3" style="padding-top: 8px; margin-left: -14px;">
                     <div class="input-group">
@@ -218,7 +218,7 @@
                         <div class="col-sm-8 col-md-4 col-lg-3">
                             <div class="input-group">
                                 <span class="input-group-addon"
-                                      tooltip="Specify max. number of AIS records" tooltip-placement="bottom">duplicates (s)</span>
+                                      tooltip="Remove duplicates within this time window" tooltip-placement="bottom">duplicates (s)</span>
                                 <input type="number" class="form-control input-sm"  ng-model="params.duplicateWindow" >
                                 <span class="input-group-addon glyphicon glyphicon-trash trash-btn" ng-click="params.duplicateWindow = undefined;"></span>
                             </div>
@@ -229,7 +229,7 @@
                         <div class="col-sm-8 col-md-4 col-lg-3">
                             <div class="input-group">
                                 <span class="input-group-addon"
-                                      tooltip="Specify max. number of AIS records" tooltip-placement="bottom">min. dist (m)</span>
+                                      tooltip="Minimum distance between positions" tooltip-placement="bottom">min. dist (m)</span>
                                 <input type="number" class="form-control input-sm"  ng-model="params.minDistance" >
                                 <span class="input-group-addon glyphicon glyphicon-trash trash-btn" ng-click="params.minDistance = undefined;"></span>
                             </div>
@@ -238,7 +238,7 @@
                         <div class="col-sm-8 col-md-4 col-lg-3">
                             <div class="input-group">
                                 <span class="input-group-addon"
-                                      tooltip="Specify max. number of AIS records" tooltip-placement="bottom">min. duration (s)</span>
+                                      tooltip="Minimum time between positions" tooltip-placement="bottom">min. duration (s)</span>
                                 <input type="number" class="form-control input-sm"  ng-model="params.minDuration" >
                                 <span class="input-group-addon glyphicon glyphicon-trash trash-btn" ng-click="params.minDuration = undefined;"></span>
                             </div>
