@@ -208,7 +208,8 @@
                     <div class="form-group row">
                         <div class="col-sm-8 col-md-4 col-lg-3">
                             <div class="input-group">
-                                <span class="input-group-addon">limit records</span>
+                                <span class="input-group-addon"
+                                      tooltip="Specify max. number of AIS records" tooltip-placement="bottom">limit records</span>
                                 <input type="number" class="form-control input-sm"  ng-model="params.limit">
                                 <span class="input-group-addon glyphicon glyphicon-trash trash-btn" ng-click="params.limit = undefined;"></span>
                             </div>
@@ -216,7 +217,8 @@
 
                         <div class="col-sm-8 col-md-4 col-lg-3">
                             <div class="input-group">
-                                <span class="input-group-addon">duplicates (s)</span>
+                                <span class="input-group-addon"
+                                      tooltip="Specify max. number of AIS records" tooltip-placement="bottom">duplicates (s)</span>
                                 <input type="number" class="form-control input-sm"  ng-model="params.duplicateWindow" >
                                 <span class="input-group-addon glyphicon glyphicon-trash trash-btn" ng-click="params.duplicateWindow = undefined;"></span>
                             </div>
@@ -226,7 +228,8 @@
                     <div class="form-group row">
                         <div class="col-sm-8 col-md-4 col-lg-3">
                             <div class="input-group">
-                                <span class="input-group-addon">min. dist (m)</span>
+                                <span class="input-group-addon"
+                                      tooltip="Specify max. number of AIS records" tooltip-placement="bottom">min. dist (m)</span>
                                 <input type="number" class="form-control input-sm"  ng-model="params.minDistance" >
                                 <span class="input-group-addon glyphicon glyphicon-trash trash-btn" ng-click="params.minDistance = undefined;"></span>
                             </div>
@@ -234,7 +237,8 @@
 
                         <div class="col-sm-8 col-md-4 col-lg-3">
                             <div class="input-group">
-                                <span class="input-group-addon">min. duration (s)</span>
+                                <span class="input-group-addon"
+                                      tooltip="Specify max. number of AIS records" tooltip-placement="bottom">min. duration (s)</span>
                                 <input type="number" class="form-control input-sm"  ng-model="params.minDuration" >
                                 <span class="input-group-addon glyphicon glyphicon-trash trash-btn" ng-click="params.minDuration = undefined;"></span>
                             </div>
@@ -247,12 +251,19 @@
             <!-- Download Buttons -->
             <div class="row query-section">
                 <div class="col-xs-offset-4 col-sm-offset-2 col-md-offset-1 col-lg-offset-1 col-xs-8 col-sm-10 col-md-11 col-lg-11 input-group">
-                    <button type="button" class="btn btn-primary" ng-click="download()" ng-disabled="downloadDisabled">
+                    <button type="button" class="btn btn-primary" ng-click="execute(true)" ng-disabled="downloadDisabled">
                         <span class="glyphicon glyphicon-download-alt"></span> Schedule
                     </button>&nbsp;
-                    <button type="button" class="btn btn-default" ng-click="open()" ng-disabled="downloadDisabled">
-                        <span class="glyphicon glyphicon-download"></span> Open
-                    </button>&nbsp;
+                    <div class="btn-group" dropdown>
+                        <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle ng-disabled="downloadDisabled">
+                            <span class="glyphicon glyphicon-download"></span> Open
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href ng-click="execute(false)">In AisDownloader</a></li>
+                            <li><a href ng-click="openInAisStore()">In AisView</a></li>
+                        </ul>
+                    </div>&nbsp;
                     <button type="button" class="btn btn-default" ng-click="copy()" ng-disabled="downloadDisabled">
                         <span class="glyphicon glyphicon-copy"></span> Copy URL
                     </button>&nbsp;

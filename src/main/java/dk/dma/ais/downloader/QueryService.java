@@ -50,8 +50,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -165,8 +167,8 @@ public class QueryService {
      * @param url the URL to load
      * @param path the path to save the file to
      */
-    private void asyncLoadFile(final String url, final Path path) {
-        Runnable job = () -> {
+    private Future<Path> asyncLoadFile(final String url, final Path path) {
+        Callable<Path> job = () -> {
             long t0 = System.currentTimeMillis();
 
             // For the resulting file, drop the ".download" suffix
@@ -212,25 +214,33 @@ public class QueryService {
                 } catch (IOException ex) {
                     log.finer("Failed generating error file " + errorFile);
                 }
-                return;
+                return errorFile;
             }
 
+            Path resultPath = path.getParent().resolve(name);
             try {
-                Path resultPath = path.getParent().resolve(name);
                 Files.move(path, resultPath);
             } catch (IOException e) {
                 log.log(Level.SEVERE, "Failed renaming path " + path + ": " + e.getMessage());
             }
+            return resultPath;
         };
 
         log.info("Submitting new job: " + url);
-        processPool.submit(job);
+        return processPool.submit(job);
     }
 
-
+    /**
+     * Execute the given query
+     * @param clientId the client id
+     * @param async whether to execute synchronously or asynchronously
+     * @param params the query parameters
+     * @return the result file
+     */
     @RequestMapping( value = "/execute/{clientId}", method= RequestMethod.GET)
     @ResponseBody
     public RepoFile executeQuery(@PathVariable("clientId") String clientId,
+                                 @RequestParam(value = "async", defaultValue = "true") boolean async,
                                  @RequestParam("params") String params) throws IOException {
         String url = aisViewUrl + params;
 
@@ -247,15 +257,25 @@ public class QueryService {
                 dir,
                 new SimpleDateFormat("MM-dd HHmmss ").format(now),
                 fileType(url) + DOWNLOAD_SUFFIX);
+        String fileName = file.getFileName().toString();
 
 
-        // Load the file async
-        asyncLoadFile(url, file);
+        // Load the file
+        Future<Path> result = asyncLoadFile(url, file);
+        if (!async) {
+            try {
+                Path path = result.get();
+                // The resulting path may actually by an error file
+                fileName = path.getFileName().toString();
+            } catch (Exception e) {
+                log.severe("Error executing query: " + params + ", error: " + e);
+            }
+        }
 
         // Return a RepoFile for the newly created file
         RepoFile vo = new RepoFile();
-        vo.setName(file.getFileName().toString());
-        vo.setPath(clientId + "/" + file.getFileName().toString());
+        vo.setName(fileName);
+        vo.setPath(clientId + "/" + fileName);
         vo.setUpdated(now);
         vo.setSize(0L);
         return vo;

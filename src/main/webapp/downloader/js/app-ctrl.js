@@ -474,27 +474,37 @@ angular.module('aisdownloader.app')
                 $scope.downloadUrl = url;
             };
 
+            /**
+             * Update the model from the filters and updates the download URL
+             */
+            $scope.recomputeDownloadUrl = function () {
+                $scope.updateSourceFilter(false);
+                $scope.updateTargetFilter(false);
+                $scope.updateMessageFilter(false);
+                $scope.updateDownloadUrl();
+            };
+
             $scope.downloadDisabled = false;
 
             /**
              * Main search method
              */
-            $scope.download = function () {
-                $scope.updateSourceFilter(false);
-                $scope.updateTargetFilter(false);
-                $scope.updateMessageFilter(false);
-                $scope.updateDownloadUrl();
+            $scope.execute = function (async) {
+                $scope.recomputeDownloadUrl();
                 $scope.downloadDisabled = true;
 
                 AisQueryService.execute(
                     $scope.downloadUrl,
-                    function () {
+                    async,
+                    function (result) {
+                        if (!async) {
+                            AisQueryService.openFile(result);
+                        }
                     },
-                    function () {
-                    });
+                    function () {});
 
                 AisQueryService.saveSearchParams($scope.params);
-                growlNotifications.add('Download Scheduled', 'info', 2000);
+                growlNotifications.add(async ? 'Download Scheduled' : 'Download Scheduled.<br><small>Opens upon completion</small>', 'info', 2000);
 
                 // Re-enable the Download button after 2 seconds to avoid double-clicks
                 $timeout(function () {
@@ -516,11 +526,8 @@ angular.module('aisdownloader.app')
             /**
              * Open dialog with URL
              */
-            $scope.open = function () {
-                $scope.updateSourceFilter(false);
-                $scope.updateTargetFilter(false);
-                $scope.updateMessageFilter(false);
-                $scope.updateDownloadUrl();
+            $scope.openInAisStore = function () {
+                $scope.recomputeDownloadUrl();
                 var url = 'https://ais2.e-navigation.net/aisview/rest/store/query?' + $scope.downloadUrl;
                 window.open(url);
             };
@@ -529,10 +536,7 @@ angular.module('aisdownloader.app')
              * Open dialog with URL
              */
             $scope.copy = function () {
-                $scope.updateSourceFilter(false);
-                $scope.updateTargetFilter(false);
-                $scope.updateMessageFilter(false);
-                $scope.updateDownloadUrl();
+                $scope.recomputeDownloadUrl();
                 window.prompt("Copy to clipboard:",
                     'https://ais2.e-navigation.net/aisview/rest/store/query?' + $scope.downloadUrl);
             }
@@ -581,7 +585,7 @@ angular.module('aisdownloader.app')
              * @param file the file to open
              */
             $scope.openFile = function (file) {
-                window.open('/downloader/query/file/' + file.path);
+                AisQueryService.openFile(file);
             };
 
             /**
@@ -591,7 +595,7 @@ angular.module('aisdownloader.app')
             $scope.deleteFile = function (file) {
                 AisQueryService.deleteFile(
                     file.path,
-                    function (result) { $scope.updateFiles(); },
+                    function () { $scope.updateFiles(); },
                     function () { $scope.updateFiles(); });
             };
 
@@ -600,7 +604,7 @@ angular.module('aisdownloader.app')
              */
             $scope.deleteFiles = function () {
                 AisQueryService.deleteFiles(
-                    function (result) { $scope.updateFiles(); },
+                    function () { $scope.updateFiles(); },
                     function () { $scope.updateFiles(); });
             }
 

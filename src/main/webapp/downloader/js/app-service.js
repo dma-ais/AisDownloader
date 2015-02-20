@@ -126,10 +126,17 @@ angular.module('aisdownloader.app')
 
 
             /**
+             * Opens the given file
+             */
+            openFile: function(file) {
+                window.open('/downloader/query/file/' + file.path);
+            },
+
+            /**
              * Schedules a query via the backend
              */
-            execute: function(params, success, error) {
-                $http.get('/downloader/query/execute/' + this.clientId() + '?params=' + encodeURIComponent(params))
+            execute: function(params, async, success, error) {
+                $http.get('/downloader/query/execute/' + this.clientId() + '?async=' + async + '&params=' + encodeURIComponent(params))
                     .success(success)
                     .error(error);
             },
